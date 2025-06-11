@@ -1,0 +1,99 @@
+/* New wrapper to control layout */
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.38);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 20px 30px;
+    margin: 10px auto;
+    width: 90%;
+    max-width: 1200px;
+}
+
+/* Navigation styles */
+nav {
+    flex: 1;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+nav li {
+    margin-left: 40px;
+    transition: color 1s, transform 0.3s ease;
+}
+
+nav li:hover {
+    transform: scale(1.1);
+}
+
+nav a {
+    text-decoration: none;
+    color: #020202;
+    font-weight: 500;
+    padding: 10px 5px;
+    position: relative;
+}
+
+nav a:hover {
+    color: #2b4552;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: #2b4552;
+    bottom: 0;
+    left: 0;
+    transition: width 0.3s ease;
+}
+
+nav a:hover::after,
+nav a.active::after {
+    width: 100%;
+}
+
+nav a.active {
+    color: white;
+}
+
+/* Profile picture wrapper */
+.pp {
+    display: flex;
+    align-items: center;
+}
+
+/* Profile picture */
+.profile_pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    opacity: 75%;
+    transition: 1s;
+
+}
+.profile_pic:hover {
+    opacity: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+}
+.logo{
+    display: flex;
+    align-items: center;
+    width: 110px;
+    height: 50px;
+}
