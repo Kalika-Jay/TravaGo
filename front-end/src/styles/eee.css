@@ -1,0 +1,8 @@
+.back{
+    object-fit: cover;
+}
+.bot{
+    position: relative;
+    width: 100%;
+    scale: 0.3;
+}
