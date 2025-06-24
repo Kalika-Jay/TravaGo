@@ -282,7 +282,7 @@ const TripFeed = () => {
     return (
         <div className="trip-feed-container">
             <div className="feed-header">
-                <div className="header-content">
+                <div className="header-content-home">
                     {user && <p className='hi'>Hi</p>}
                     {user && <p className='name'>{username}</p>}
                     {!user && <p className='hi'>Looking for a Trip?</p>}
