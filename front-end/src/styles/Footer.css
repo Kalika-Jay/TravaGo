@@ -16,5 +16,5 @@ footer {
 .footer_logo {
     width: 80px;  /* or any suitable size */
     height: auto;
-    max-width: 100%; /* prevents overflow */
+    max-width: 100%; /* prevents overflow */
 }

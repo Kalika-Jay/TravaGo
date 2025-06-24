@@ -1,5 +1,6 @@
 import "../styles/Map.css";
 import {users} from "../Content/map.js";
+import {ChevronUp, MapPin, Star, ChevronDown, ChevronRight, ChevronLeft} from "lucide-react";
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import upArrow from "../assets/places_images/up_arrow.jpg";
 import downArrow from "../assets/places_images/down_arrow.jpg";
@@ -25,6 +26,9 @@ export default function Map() {
         setCurrentDesIndex((prevIndex) =>
             (prevIndex - 1 + destinations.length) % destinations.length
         );
+    };
+    const toggleActive = () => {
+        setActiveButton(!activeButton);
     };
     return (
         <>
@@ -364,13 +368,99 @@ export default function Map() {
             {/*    <h2>Active User</h2>*/}
             {/*    <p>Name: {activeUser? activeUser.district:''}</p>*/}
             {/*</div>*/}
-            <button className={activeButton? 'up_button':'buttons_hidden'} onClick={handlePrev}><img className='Arrow' src={upArrow}/></button>
-            <h2 className='place'>{activeButton? destinations[currentDesIndex].place:''}</h2>
-            <div className={activeButton? 'content_box':'content_box_hidden'}>
-                <img className='desImage' src={activeButton? destinations[currentDesIndex].pic:''}/>
-                <p className='content_tile'>{activeButton? destinations[currentDesIndex].content:''}</p>
+            <div className="app-container">
+
+                <div className="card-wrapper">
+                    {/* Navigation Button - Up */}
+                    <button
+                        className={`nav-button nav-button-up ${
+                            activeButton
+                                ? 'visible'
+                                : 'hidden'
+                        }`}
+                        onClick={handlePrev}
+                    >
+                        <ChevronLeft className="nav-icon" />
+                    </button>
+                    {/* Main Content Card */}
+                    <div className={`destination-card ${
+                        activeButton
+                            ? 'visible'
+                            : 'hidden'
+                    }`}>
+
+                        {/* Header with Location */}
+                        <div className="card-header">
+                            <div className={`header-content-map ${
+                                activeButton ? 'visible' : 'hidden'
+                            }`}>
+                                <div className="location-info">
+                                    <MapPin className="location-icon" />
+                                    <h2 className="location-name">
+                                        {activeButton ? destinations[currentDesIndex].place : ''}
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Image Container */}
+                        <div className={`image-container ${
+                            activeButton ? 'visible' : 'hidden'
+                        }`}>
+                            <img
+                                className="destination-image"
+                                src={activeButton ? destinations[currentDesIndex].pic : ''}
+                                alt={activeButton ? destinations[currentDesIndex].place : ''}
+                            />
+                            <div className="image-overlay" />
+                        </div>
+
+                        {/* Content */}
+                        <div className={`card-content-map ${
+                            activeButton ? 'visible' : 'hidden'
+                        }`}>
+                            <p className="description-text">
+                                {activeButton ? destinations[currentDesIndex].content : ''}
+                            </p>
+
+                            {/* Dots Indicator */}
+                            <div className="dots-container">
+                                {destinations.map((_, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => setCurrentDesIndex(index)}
+                                        className={`dot ${
+                                            index === currentDesIndex
+                                                ? 'active'
+                                                : ''
+                                        }`}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Navigation Button - Down */}
+                    <button
+                        className={`nav-button nav-button-down ${
+                            activeButton
+                                ? 'visible'
+                                : 'hidden'
+                        }`}
+                        onClick={handleNext}
+                    >
+                        <ChevronRight className="nav-icon" />
+                    </button>
+                    {/* Toggle Button */}
+                    {activeButton&&<button
+                        onClick={toggleActive}
+                        className="toggle-button"
+                    >
+                        Hide Destinations
+                    </button>}
+                </div>
+
             </div>
-            <button className={activeButton? 'down_button':'buttons_hidden'} onClick={handleNext}><img className='Arrow' src={downArrow}/></button>
         </>
     );
 }

@@ -6,10 +6,10 @@ export const signUpRoute ={
     path:'/api/signup',
     method:'post',
     handler:async (req,res)=>{
-        const {email, password} = req.body;
+        const {username, password} = req.body;
 
         const db =getDbConnection('auth-db')
-        const user = await db.collection('users').findOne({email});
+        const user = await db.collection('users').findOne({username});
 
         if (user){
             res.status(409).send({user});
@@ -21,13 +21,13 @@ export const signUpRoute ={
             age:''
         }
         const result = await db.collection('users').insertOne({
-            email,passwordHash,info: strartingInfo,isVerified: false,
+            username,passwordHash,info: strartingInfo,isVerified: false,
         });
         const {insertedId} = result;
 
         jwt.sign({
             id:insertedId,
-            email,
+                username,
             info:strartingInfo,
             isVerified:false,
         },
