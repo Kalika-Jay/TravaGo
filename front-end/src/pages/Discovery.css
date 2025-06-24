@@ -1,0 +1,234 @@
+.container-background-image{
+
+    background-size: cover;
+    background-position: center;
+    height: 80vh;
+    width: 100%;
+    position: relative;
+    top: -15vh;
+
+}
+.title-one {
+    text-align: left;
+    color: white;
+    padding-left: 100px;
+    padding-top: 15px;
+    font-size: 2rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.discription-text {
+   color: white;
+    text-align: justify;
+    margin-top: 30px;
+    padding-top: 15px;
+    padding-left: 100px;
+    font-size: 1.4rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+}
+.search-bar {
+    display: flex;
+    gap: 7rem;
+    align-items: flex-start;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 40px;
+    margin-left: 150px;
+    margin-right: 200px;
+    margin-top: 50px;
+    border-radius: 10px;
+
+
+
+}
+.input-group {
+
+   font-size: 1.1rem;
+    font-family:Verdana ,arial,sans-serif;
+    font-weight: bold;
+    color: #2b4552;
+}
+.input-textbox{
+    width: 120%;
+    margin-top: 0.7rem;
+    padding: 0.4rem;
+    border-radius: 2rem;
+    background-color: darkgrey;
+    border: none;
+    color: #2b4552;
+    font-family: Arial,Verdana, Geneva, Tahoma, sans-serif;
+}
+.input-textbox::placeholder{
+    font-family: Arial,Verdana, Geneva, Tahoma, sans-serif;
+    color: #2b4552;
+}
+
+
+/* Style the range input */
+.input-group input[type="range"] {
+    -webkit-appearance: none;  /* Remove default styling */
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    background: darkgrey;
+    outline: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+
+}
+
+/* Track */
+.input-group input[type="range"]:hover {
+    background: darkgrey;
+}
+
+/* Thumb */
+.input-group input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #2b4552;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+    /* Align thumb vertically */
+}
+
+.input-group input[type="range"]:active::-webkit-slider-thumb {
+    background: #2b4552;
+}
+
+/* Firefox */
+.input-group input[type="range"]::-moz-range-thumb {
+    width: 10px;
+    height: 10px;
+    background: #2b4552;
+    cursor: pointer;
+    border-radius: 50%;
+
+    transition: background 0.3s ease;
+}
+
+.input-group input[type="range"]:active::-moz-range-thumb {
+    background: #2b4552;
+}
+
+checkbox-options {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+
+}
+
+.checkbox-options label {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: #2b4552;
+    font-family: Arial,Verdana, Geneva, Tahoma, sans-serif;
+    padding-top: 10px;
+}
+.mode-label {
+    font-size: 1.1rem;
+    font-family:Verdana ,arial,sans-serif;
+    font-weight: bold;
+    color: #2b4552;
+}
+.class-container {
+    display: flex;
+    flex-wrap: wrap;
+    background-position: center;
+    height:auto;
+    position: relative;
+    gap: 1.5rem;
+
+}
+.title {
+    color: #2b4552;
+    margin-left: 400px;
+    margin-right: 400px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin-top: -50px;
+
+}
+.card {
+    width:400px;
+    margin: 30px;
+
+}
+.card-image {
+   width: 80%;
+    margin-left: 40px;
+    margin-top: 20px;
+    margin-bottom: 7px;
+    border-radius: 15px;
+
+}
+.card-location{
+    margin-left: 50px;
+    margin-bottom: 7px;
+    color: dimgrey;
+
+}
+.card-title{
+    font-family: Arial,Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    color: black;
+    margin-left: 50px;
+    margin-bottom: 7px;
+}
+.view-btn{
+    background-color: #2b4552;
+    color: white;
+    border-radius: 15px;
+    margin-left: 40px;
+    padding: 10px;
+    text-decoration: none;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 0.8rem;
+}
+.feed-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+    background: #f3f4f6;
+    padding: 4px;
+    border-radius: 8px;
+    width: fit-content;
+    margin-left: 80px;
+    margin-top: 20px;
+}
+
+.tab-button {
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #6b7280;
+    transition: all 0.2s;
+}
+
+.tab-button.active {
+    background: white;
+    color: #2b4552;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+
+}
+.trip-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+    margin-left: 43px;
+}
+
+.trip-detail {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color:#2b4552;
+    font-size: 0.875rem;
+}
+
