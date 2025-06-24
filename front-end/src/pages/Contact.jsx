@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from "react";
-import io from "socket.io-client";
+import React, { useState } from "react";
 import "../styles/Contact.css";
-
-const socket = io("http://localhost:5000"); // Replace with your backend URL
 
 const teamMembers = [
     {
@@ -41,31 +38,12 @@ export default function Contact() {
     const [selectedMember, setSelectedMember] = useState(teamMembers[0].email);
     const [messageType, setMessageType] = useState("group"); // "group" or "private"
 
-    useEffect(() => {
-        socket.on("chatMessage", (msg) => setChat((prev) => [...prev, msg]));
-        socket.on("announcement", (ann) => setAnnouncements((prev) => [...prev, ann]));
-        socket.on("privateMessage", (msg) =>
-            setChat((prev) => [...prev, `(Private from ${msg.from}): ${msg.message}`])
-        );
-
-        return () => {
-            socket.off("chatMessage");
-            socket.off("announcement");
-            socket.off("privateMessage");
-        };
-    }, []);
-
     const sendMessage = () => {
         if (!message.trim()) return;
 
         if (messageType === "group") {
-            socket.emit("chatMessage", message);
             setChat((prev) => [...prev, `(You to Group): ${message}`]);
         } else {
-            socket.emit("privateMessage", {
-                to: selectedMember,
-                message
-            });
             setChat((prev) => [...prev, `(You to ${selectedMember}): ${message}`]);
         }
 
@@ -74,7 +52,7 @@ export default function Contact() {
 
     const sendAnnouncement = () => {
         if (announcement.trim()) {
-            socket.emit("announcement", announcement);
+            setAnnouncements((prev) => [...prev, announcement]);
             setAnnouncement("");
         }
     };

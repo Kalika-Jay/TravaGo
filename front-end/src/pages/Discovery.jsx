@@ -1,6 +1,6 @@
 
  import imageTitle from '../assets/background.jpg';
- import '../pages/Discovery.css';
+ import '../styles/Discovery.css';
  import sigiriya from '../assets/Sigiriya.jpg';
  import React,{useState,useEffect} from 'react';
  import { Link } from 'react-router-dom';
