@@ -6,11 +6,11 @@ export const loginRoute={
     path:"/api/login",
     method:"post",
     handler:async (req, res) => {
-        const {email, password} = req.body;
+        const {username, password} = req.body;
 
         const db =getDbConnection('auth-db');
 
-        const user = await db.collection('users').findOne({email});
+        const user = await db.collection('users').findOne({username});
 
         if (!user){
             return res.status(401).send({})
@@ -19,7 +19,7 @@ export const loginRoute={
         const isCorrect = await bcrpt.compare(password, passwordHash);
 
         if (isCorrect) {
-            jwt.sign({id, isVerified,email,info},process.env.JWT_SECRET,{expiresIn: '2d'},(err,token)=>{
+            jwt.sign({id, isVerified,username,info},process.env.JWT_SECRET,{expiresIn: '2d'},(err,token)=>{
                 if (err){
                     res.status(500).json({err});
                 }

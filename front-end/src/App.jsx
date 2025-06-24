@@ -17,8 +17,8 @@ const routes = [{path:'/login',element: <LogIn/>},{path:'/signup',element: <Sign
             {path:'/userprofile',element:<PrivateRoute><UserProfile/></PrivateRoute>},
             {path:'/discovery',element:<Discovery/>},
             {path:'/map',element:<Map/>},
-            {path:'/contact',element:<Contact/>},
-            {path:'/feedback',element:<Feedback/>}
+            {path:'/contact',element:<PrivateRoute><Contact/></PrivateRoute>},
+            {path:'/feedback',element:<PrivateRoute><Feedback/></PrivateRoute>}
         ]},
 ]
 const router = createBrowserRouter(routes)

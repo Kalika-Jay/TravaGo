@@ -6,15 +6,16 @@ footer {
     /*border-top-left-radius: 20px;*/
     /*border-top-right-radius: 20px;*/
 }
-.footer_container{
+.footer_container {
     text-align: center;
     align-content: center;
-    display: grid; /* Use grid layout */
-    grid-template-columns: repeat(3, 1fr); /* Four equal columns */
-    grid-template-rows: repeat(1, 1fr); /* One row */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjust 150px as needed */
+    grid-gap: 20px;
 }
-.footer_logo{
-    scale: 0.6;
+.footer_logo {
+    width: 80px;  /* or any suitable size */
+    height: auto;
+    max-width: 100%; /* prevents overflow */
 }
-
 

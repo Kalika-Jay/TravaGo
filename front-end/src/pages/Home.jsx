@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, MessageCircle, Share2, MapPin, Calendar, Users, DollarSign, Star, Verified, Plus, Filter, TrendingUp } from 'lucide-react';
+import { Heart, MessageCircle, Share2, MapPin, Calendar, Users, DollarSign, Star, Verified, Plus, Filter,ArrowRight, TrendingUp,TentTree} from 'lucide-react';
+import useUsers from '../auth/useUser.jsx';
+import '../styles/Home.css'
+import {Link} from 'react-router-dom'
+import fadeindes from '../assets/fadeindes.jsx'
+import {Navigate} from "react-router-dom";
+import temple from '../assets/places_images/Temple_of_tooth_relic.jpg'
+import mountain from '../assets/places_images/shutterstock_562419604_20191120103528.png'
+import beach from '../assets/places_images/mirissa-beach-banner.webp'
 
 const TripFeed = () => {
+    const user = useUsers();
+    if (user){
+        var {username}= user;
+    }
     const [activeTab, setActiveTab] = useState('feed');
     const [trips, setTrips] = useState([]);
     const [showCreateTrip, setShowCreateTrip] = useState(false);
@@ -271,545 +283,158 @@ const TripFeed = () => {
         <div className="trip-feed-container">
             <div className="feed-header">
                 <div className="header-content">
-                    <h1>Trip Feed</h1>
-                    <p>Discover amazing trips and connect with fellow travelers across Sri Lanka</p>
+                    {user && <p className='hi'>Hi</p>}
+                    {user && <p className='name'>{username}</p>}
+                    {!user && <p className='hi'>Looking for a Trip?</p>}
+                    <p className='description'>Discover amazing trips and connect with fellow travelers across Sri
+                        Lanka</p>
                 </div>
-                <button className="create-trip-button" onClick={handleCreateTrip}>
-                    <Plus size={20} />
-                    Create Trip
-                </button>
-            </div>
 
-            <div className="feed-tabs">
-                <button
-                    className={`tab-button ${activeTab === 'feed' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('feed')}
-                >
-                    Activity Feed
-                </button>
-                <button
-                    className={`tab-button ${activeTab === 'recommended' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('recommended')}
-                >
-                    Recommended
-                </button>
-                <button
-                    className={`tab-button ${activeTab === 'trending' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('trending')}
-                >
-                    Trending
-                </button>
+            <div className='image-row'>
+                <img className='back_images' src={mountain}></img>
+                <img className='back_images' src={temple}></img>
+                <img className='back_images' src={beach}></img>
             </div>
-
-            <div className="feed-filters">
-                <div className="filter-group">
-                    <Filter size={16} />
-                    <select
-                        value={filters.destination}
-                        onChange={(e) => setFilters({...filters, destination: e.target.value})}
-                    >
-                        <option value="">All Destinations</option>
-                        <option value="western">Western Province</option>
-                        <option value="central">Central Province</option>
-                        <option value="southern">Southern Province</option>
-                    </select>
+            </div>
+            {/*{user &&<div><br/><br/><br/><br/></div>}*/}
+            {user && <div className="join_create_trips">
+                <div className='join-trip'>
+                    <p>Join an existing trip</p>
+                    <Link to='/discovery'>
+                        <button className='join'>Join trip</button>
+                    </Link>
                 </div>
-                <div className="filter-group">
-                    <select
-                        value={filters.budget}
-                        onChange={(e) => setFilters({...filters, budget: e.target.value})}
-                    >
-                        <option value="">Any Budget</option>
-                        <option value="low">Under $100</option>
-                        <option value="medium">$100-300</option>
-                        <option value="high">$300+</option>
-                    </select>
+                <div className='create-trip'>
+                    <p>Create a new trip</p>
+                    <button className="create-button" onClick={handleCreateTrip}>
+                        Create Trip
+                    </button>
                 </div>
-                <div className="filter-group">
-                    <select
-                        value={filters.groupSize}
-                        onChange={(e) => setFilters({...filters, groupSize: e.target.value})}
-                    >
-                        <option value="">Any Group Size</option>
-                        <option value="small">2-4 people</option>
-                        <option value="medium">5-7 people</option>
-                        <option value="large">8+ people</option>
-                    </select>
+            </div>}
+            {/*{!user && <div><br/><br/><br/><br/><br/><br/><br/></div>}*/}
+            <section className="section-container">
+                <div className="section-wrapper">
+                    <div className="section-header">
+                        <h2 className="section-title">Why Choose Travago?</h2>
+                        <p className="section-subtitle">Your perfect travel companion</p>
+                    </div>
+
+                    <div className="feature-grid">
+                        <div className="feature-item">
+                            <div className="feature-icon-container bg-location">
+                                <TentTree className="text-white" size={24}/>
+                            </div>
+                            <h3 className="feature-title">Fast Trip Creation</h3>
+                            <p className="feature-description">
+                                You can create your own trip based on your preferences.
+                            </p>
+                        </div>
+
+                        <div className="feature-item" style={{animationDelay: '0.5s'}}>
+                            <div className="feature-icon-container bg-booking">
+                                <Calendar className="text-white" size={24}/>
+                            </div>
+                            <h3 className="feature-title">Easy Joining</h3>
+                            <p className="feature-description">
+                                With just a few clicks, can join a trip.
+                            </p>
+                        </div>
+
+                        <div className="feature-item" style={{animationDelay: '1s'}}>
+                            <div className="feature-icon-container bg-support">
+                                <Users className="text-white" size={24}/>
+                            </div>
+                            <h3 className="feature-title">24/7 Support</h3>
+                            <p className="feature-description">
+                                Our dedicated team is always ready to help you have the best travel experience.
+                            </p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div className="trips-grid">
-                {trips
-                    .filter(trip => {
-                        if (activeTab === 'recommended') return trip.isRecommended;
-                        if (activeTab === 'trending') return trip.isTrending;
-                        return true;
-                    })
-                    .map(trip => (
-                        <TripCard key={trip.id} trip={trip} />
-                    ))
-                }
-            </div>
-
-            {showCreateTrip && <CreateTripModal />}
-
-            <style jsx>{`
-        .trip-feed-container {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 20px;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        .feed-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 30px;
-          padding-bottom: 20px;
-          border-bottom: 1px solid #e5e7eb;
-        }
-
-        .header-content h1 {
-          margin: 0 0 5px 0;
-          font-size: 2rem;
-          font-weight: 700;
-          color: #1f2937;
-        }
-
-        .header-content p {
-          margin: 0;
-          color: #6b7280;
-          font-size: 1rem;
-        }
-
-        .create-trip-button {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          background: #3b82f6;
-          color: white;
-          border: none;
-          padding: 12px 24px;
-          border-radius: 8px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: background-color 0.2s;
-        }
-
-        .create-trip-button:hover {
-          background: #2563eb;
-        }
-
-        .feed-tabs {
-          display: flex;
-          gap: 4px;
-          margin-bottom: 24px;
-          background: #f3f4f6;
-          padding: 4px;
-          border-radius: 8px;
-          width: fit-content;
-        }
-
-        .tab-button {
-          padding: 8px 16px;
-          border: none;
-          background: transparent;
-          border-radius: 6px;
-          cursor: pointer;
-          font-weight: 500;
-          color: #6b7280;
-          transition: all 0.2s;
-        }
-
-        .tab-button.active {
-          background: white;
-          color: #1f2937;
-          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        }
-
-        .feed-filters {
-          display: flex;
-          gap: 12px;
-          margin-bottom: 24px;
-          flex-wrap: wrap;
-        }
-
-        .filter-group {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          background: white;
-          border: 1px solid #d1d5db;
-          border-radius: 6px;
-          padding: 8px 12px;
-        }
-
-        .filter-group select {
-          border: none;
-          background: transparent;
-          outline: none;
-          cursor: pointer;
-          color: #374151;
-        }
-
-        .trips-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-          gap: 24px;
-        }
-
-        .trip-card {
-          background: white;
-          border-radius: 12px;
-          overflow: hidden;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-          transition: box-shadow 0.2s, transform 0.2s;
-        }
-
-        .trip-card:hover {
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-          transform: translateY(-2px);
-        }
-
-        .trip-image-container {
-          position: relative;
-          height: 200px;
-          overflow: hidden;
-        }
-
-        .trip-image {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-
-        .recommended-badge, .trending-badge {
-          position: absolute;
-          top: 12px;
-          right: 12px;
-          background: rgba(0, 0, 0, 0.8);
-          color: white;
-          padding: 4px 8px;
-          border-radius: 6px;
-          font-size: 0.75rem;
-          font-weight: 500;
-          display: flex;
-          align-items: center;
-          gap: 4px;
-        }
-
-        .recommended-badge {
-          background: rgba(34, 197, 94, 0.9);
-        }
-
-        .trending-badge {
-          background: rgba(239, 68, 68, 0.9);
-        }
-
-        .trip-content {
-          padding: 20px;
-        }
-
-        .trip-header {
-          margin-bottom: 12px;
-        }
-
-        .creator-info {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-        }
-
-        .creator-avatar {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          object-fit: cover;
-        }
-
-        .creator-name {
-          font-weight: 600;
-          color: #1f2937;
-          display: flex;
-          align-items: center;
-          gap: 4px;
-        }
-
-        .verified-icon {
-          color: #3b82f6;
-        }
-
-        .creator-rating {
-          display: flex;
-          align-items: center;
-          gap: 2px;
-          color: #6b7280;
-          font-size: 0.875rem;
-        }
-
-        .star-icon {
-          color: #fbbf24;
-        }
-
-        .trip-title {
-          margin: 0 0 8px 0;
-          font-size: 1.25rem;
-          font-weight: 700;
-          color: #1f2937;
-        }
-
-        .trip-description {
-          margin: 0 0 12px 0;
-          color: #4b5563;
-          line-height: 1.5;
-        }
-
-        .trip-tags {
-          display: flex;
-          gap: 6px;
-          margin-bottom: 16px;
-          flex-wrap: wrap;
-        }
-
-        .trip-tag {
-          background: #eff6ff;
-          color: #3b82f6;
-          padding: 2px 8px;
-          border-radius: 12px;
-          font-size: 0.75rem;
-          font-weight: 500;
-        }
-
-        .trip-details {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 8px;
-          margin-bottom: 16px;
-        }
-
-        .trip-detail {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          color: #6b7280;
-          font-size: 0.875rem;
-        }
-
-        .trip-actions {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding-top: 16px;
-          border-top: 1px solid #f3f4f6;
-        }
-
-        .action-button {
-          display: flex;
-          align-items: center;
-          gap: 4px;
-          background: none;
-          border: none;
-          color: #6b7280;
-          cursor: pointer;
-          padding: 4px 8px;
-          border-radius: 6px;
-          transition: background-color 0.2s;
-          font-size: 0.875rem;
-        }
-
-        .action-button:hover {
-          background: #f3f4f6;
-        }
-
-        .like-button:hover {
-          color: #ef4444;
-        }
-
-        .join-button {
-          margin-left: auto;
-          background: #10b981;
-          color: white;
-          border: none;
-          padding: 8px 16px;
-          border-radius: 6px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: background-color 0.2s;
-        }
-
-        .join-button:hover {
-          background: #059669;
-        }
-
-        .modal-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0, 0, 0, 0.5);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 1000;
-          padding: 20px;
-        }
-
-        .modal-content {
-          background: white;
-          border-radius: 12px;
-          width: 100%;
-          max-width: 600px;
-          max-height: 90vh;
-          overflow-y: auto;
-        }
-
-        .modal-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 24px 24px 16px;
-          border-bottom: 1px solid #e5e7eb;
-        }
-
-        .modal-header h2 {
-          margin: 0;
-          font-size: 1.5rem;
-          font-weight: 700;
-          color: #1f2937;
-        }
-
-        .close-button {
-          background: none;
-          border: none;
-          font-size: 24px;
-          cursor: pointer;
-          color: #6b7280;
-          width: 32px;
-          height: 32px;
-          border-radius: 6px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .close-button:hover {
-          background: #f3f4f6;
-        }
-
-        .create-trip-form {
-          padding: 24px;
-        }
-
-        .form-group {
-          margin-bottom: 20px;
-        }
-
-        .form-row {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 16px;
-        }
-
-        .form-group label {
-          display: block;
-          margin-bottom: 6px;
-          font-weight: 600;
-          color: #374151;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-          width: 100%;
-          padding: 10px 12px;
-          border: 1px solid #d1d5db;
-          border-radius: 6px;
-          font-size: 0.875rem;
-          transition: border-color 0.2s;
-          box-sizing: border-box;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-          outline: none;
-          border-color: #3b82f6;
-          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        .form-group textarea {
-          resize: vertical;
-          min-height: 80px;
-        }
-
-        .modal-actions {
-          display: flex;
-          gap: 12px;
-          justify-content: flex-end;
-          margin-top: 24px;
-          padding-top: 20px;
-          border-top: 1px solid #e5e7eb;
-        }
-
-        .cancel-button {
-          padding: 8px 16px;
-          border: 1px solid #d1d5db;
-          background: white;
-          color: #374151;
-          border-radius: 6px;
-          cursor: pointer;
-          font-weight: 500;
-        }
-
-        .cancel-button:hover {
-          background: #f9fafb;
-        }
-
-        .create-button {
-          padding: 8px 16px;
-          background: #3b82f6;
-          color: white;
-          border: none;
-          border-radius: 6px;
-          cursor: pointer;
-          font-weight: 600;
-        }
-
-        .create-button:hover {
-          background: #2563eb;
-        }
-
-        @media (max-width: 768px) {
-          .trip-feed-container {
-            padding: 16px;
-          }
-
-          .feed-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 16px;
-          }
-
-          .trips-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .form-row {
-            grid-template-columns: 1fr;
-          }
-
-          .feed-filters {
-            flex-direction: column;
-            align-items: stretch;
-          }
-
-          .filter-group {
-            justify-content: space-between;
-          }
-        }
-      `}</style>
+            </section>
+            <br/>
+            <section className="hero-section">
+                <div className="container">
+                    <h2 className="hero-title">Ready for Your Next Adventure?</h2>
+                    <p className="hero-description">Join millions of travelers who trust Travago for their dream
+                        vacations</p>
+                    <Link to='/signup'><button className="cta-button">
+                        Start Tripping
+                    </button></Link>
+                </div>
+            </section>
+
+            {/*<div className="feed-tabs">*/}
+            {/*    <button*/}
+            {/*        className={`tab-button ${activeTab === 'feed' ? 'active' : ''}`}*/}
+            {/*        onClick={() => setActiveTab('feed')}*/}
+            {/*    >*/}
+            {/*        Activity Feed*/}
+            {/*    </button>*/}
+            {/*    <button*/}
+            {/*        className={`tab-button ${activeTab === 'recommended' ? 'active' : ''}`}*/}
+            {/*        onClick={() => setActiveTab('recommended')}*/}
+            {/*    >*/}
+            {/*        Recommended*/}
+            {/*    </button>*/}
+            {/*    <button*/}
+            {/*        className={`tab-button ${activeTab === 'trending' ? 'active' : ''}`}*/}
+            {/*        onClick={() => setActiveTab('trending')}*/}
+            {/*    >*/}
+            {/*        Trending*/}
+            {/*    </button>*/}
+            {/*</div>*/}
+
+            {/*<div className="feed-filters">*/}
+            {/*    <div className="filter-group">*/}
+            {/*        <Filter size={16} />*/}
+            {/*        <select*/}
+            {/*            value={filters.destination}*/}
+            {/*            onChange={(e) => setFilters({...filters, destination: e.target.value})}*/}
+            {/*        >*/}
+            {/*            <option value="">All Destinations</option>*/}
+            {/*            <option value="western">Western Province</option>*/}
+            {/*            <option value="central">Central Province</option>*/}
+            {/*            <option value="southern">Southern Province</option>*/}
+            {/*        </select>*/}
+            {/*    </div>*/}
+            {/*    <div className="filter-group">*/}
+            {/*        <select*/}
+            {/*            value={filters.budget}*/}
+            {/*            onChange={(e) => setFilters({...filters, budget: e.target.value})}*/}
+            {/*        >*/}
+            {/*            <option value="">Any Budget</option>*/}
+            {/*            <option value="low">Under $100</option>*/}
+            {/*            <option value="medium">$100-300</option>*/}
+            {/*            <option value="high">$300+</option>*/}
+            {/*        </select>*/}
+            {/*    </div>*/}
+            {/*    <div className="filter-group">*/}
+            {/*        <select*/}
+            {/*            value={filters.groupSize}*/}
+            {/*            onChange={(e) => setFilters({...filters, groupSize: e.target.value})}*/}
+            {/*        >*/}
+            {/*            <option value="">Any Group Size</option>*/}
+            {/*            <option value="small">2-4 people</option>*/}
+            {/*            <option value="medium">5-7 people</option>*/}
+            {/*            <option value="large">8+ people</option>*/}
+            {/*        </select>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
+
+            {/*<div className="trips-grid">*/}
+            {/*    {trips*/}
+            {/*        .filter(trip => {*/}
+            {/*            if (activeTab === 'recommended') return trip.isRecommended;*/}
+            {/*            if (activeTab === 'trending') return trip.isTrending;*/}
+            {/*            return true;*/}
+            {/*        })*/}
+            {/*        .map(trip => (*/}
+            {/*            <TripCard key={trip.id} trip={trip} />*/}
+            {/*        ))*/}
+            {/*    }*/}
+            {/*</div>*/}
+            {showCreateTrip && <CreateTripModal/>}
         </div>
     );
 };
