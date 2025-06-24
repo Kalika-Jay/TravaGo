@@ -1,3 +1,5 @@
+import '../styles/Feedback.css'
+
 export default function Feedback(){
     return (
         <>
