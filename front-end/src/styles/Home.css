@@ -830,3 +830,103 @@
     height: 20px;
     fill: currentColor;
 }
+.class-container {
+    display: flex;
+    flex-wrap: wrap;
+    background-position: center;
+    height:auto;
+    position: relative;
+    gap: 1.5rem;
+
+}
+.title {
+    color: #2b4552;
+    margin-left: 400px;
+    margin-right: 400px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin-top: -50px;
+
+}
+.card {
+    width:400px;
+    margin: 30px;
+
+}
+.card-image {
+    width: 80%;
+    margin-left: 40px;
+    margin-top: 20px;
+    margin-bottom: 7px;
+    border-radius: 15px;
+
+}
+.card-location{
+    margin-left: 50px;
+    margin-bottom: 7px;
+    color: dimgrey;
+
+}
+.card-title{
+    font-family: Arial,Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    color: black;
+    margin-left: 50px;
+    margin-bottom: 7px;
+}
+.view-btn{
+    background-color: #2b4552;
+    color: white;
+    border-radius: 15px;
+    margin-left: 40px;
+    padding: 10px;
+    text-decoration: none;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 0.8rem;
+}
+.feed-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+    background: #f3f4f6;
+    padding: 4px;
+    border-radius: 8px;
+    width: fit-content;
+    margin-left: 80px;
+    margin-top: 20px;
+}
+
+.tab-button {
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #6b7280;
+    transition: all 0.2s;
+}
+
+.tab-button.active {
+    background: white;
+    color: #2b4552;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+
+}
+.trip-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+    margin-left: 43px;
+}
+
+.trip-detail {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color:#2b4552;
+    font-size: 0.875rem;
+}
+.my-trips{
+    display: flex;
+}

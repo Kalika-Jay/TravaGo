@@ -8,276 +8,267 @@ import {Navigate} from "react-router-dom";
 import temple from '../assets/places_images/Temple_of_tooth_relic.jpg'
 import mountain from '../assets/places_images/shutterstock_562419604_20191120103528.png'
 import beach from '../assets/places_images/mirissa-beach-banner.webp'
+import axios from "axios";
+import useToken from "../auth/useToken.jsx";
+import {info} from "autoprefixer";
+import sigiriya from "../assets/Sigiriya.jpg";
 
 const TripFeed = () => {
-    const user = useUsers();
-    if (user){
-        var {username}= user;
-    }
+    const user = useUsers(); // Assuming this hook returns the user object
+    const [token, setToken] = useToken();
+    const [tripTitle, setTripTitle] = useState('');
+    const [tripLocation, setTripLocation] = useState('');
+    const [tripDate, setTripDate] = useState('');
+    const [tripDuration, setTripDuration] = useState('');
     const [activeTab, setActiveTab] = useState('feed');
     const [trips, setTrips] = useState([]);
-    const [showCreateTrip, setShowCreateTrip] = useState(false);
     const [filters, setFilters] = useState({
         destination: '',
         dateRange: '',
         budget: '',
         groupSize: ''
     });
+    const [showCreateTrip, setShowCreateTrip] = useState(false);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
+    const [createTrip, setCreateTrip] = useState([]);
 
-    // Sample trip data
-    const sampleTrips = [
-        {
-            id: 1,
-            title: "Explore Ancient Sigiriya & Dambulla",
-            creator: {
-                name: "Amara Silva",
-                avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b372?w=50&h=50&fit=crop&crop=face",
-                isVerified: true,
-                rating: 4.8
-            },
-            destination: "Central Province",
-            date: "2025-07-15",
-            duration: "3 days",
-            groupSize: "4-6 people",
-            currentMembers: 3,
-            budget: "$150-200",
-            tags: ["Culture", "History", "Photography"],
-            description: "Join me for an incredible journey through Sri Lanka's cultural triangle. We'll climb Sigiriya Rock Fortress at sunrise and explore the ancient cave temples of Dambulla.",
-            image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop",
-            likes: 24,
-            comments: 8,
-            isRecommended: true,
-            isTrending: false
-        },
-        {
-            id: 2,
-            title: "Whale Watching in Mirissa",
-            creator: {
-                name: "James Wilson",
-                avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face",
-                isVerified: false,
-                rating: 4.5
-            },
-            destination: "Southern Province",
-            date: "2025-07-22",
-            duration: "2 days",
-            groupSize: "6-8 people",
-            currentMembers: 5,
-            budget: "$100-150",
-            tags: ["Wildlife", "Ocean", "Adventure"],
-            description: "Early morning whale watching expedition followed by beach relaxation and local seafood experiences in beautiful Mirissa.",
-            image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=250&fit=crop",
-            likes: 18,
-            comments: 12,
-            isRecommended: false,
-            isTrending: true
-        },
-        {
-            id: 3,
-            title: "Tea Country Adventure - Ella & Nuwara Eliya",
-            creator: {
-                name: "Priya Perera",
-                avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop&crop=face",
-                isVerified: true,
-                rating: 4.9
-            },
-            destination: "Central Province",
-            date: "2025-08-05",
-            duration: "4 days",
-            groupSize: "3-5 people",
-            currentMembers: 2,
-            budget: "$200-300",
-            tags: ["Nature", "Tea", "Hiking", "Photography"],
-            description: "Experience the misty hills of Sri Lanka's tea country. Train rides, tea plantation tours, hiking to Little Adam's Peak, and exploring the charming town of Ella.",
-            image: "https://images.unsplash.com/photo-1605538883669-825200433431?w=400&h=250&fit=crop",
-            likes: 31,
-            comments: 15,
-            isRecommended: true,
-            isTrending: true
-        }
-    ];
+    // Destructure user safely using optional chaining
+    const id = user?.id;
+    const username = user?.username;
+    const info = user?.info;
 
     useEffect(() => {
-        setTrips(sampleTrips);
-    }, []);
+        if (showSuccessMessage || showErrorMessage) {
+            const timer = setTimeout(() => {
+                setShowSuccessMessage(false);
+                setShowErrorMessage(false);
+            }, 3000);
 
-    const handleCreateTrip = () => {
-        setShowCreateTrip(true);
-    };
+            return () => clearTimeout(timer);
+        }
+    }, [showSuccessMessage, showErrorMessage]);
 
-    const handleLike = (tripId) => {
-        setTrips(trips.map(trip =>
-            trip.id === tripId
-                ? { ...trip, likes: trip.likes + 1 }
-                : trip
-        ));
-    };
+    useEffect(() => {
+        const fetchTrips = async () => {
+            try {
+                const res = await axios.get(`/api/users/${id}/trips`);
+                setTrips(res.data.trips);
+            } catch (err) {
+                console.error('Error fetching trips:', err);
+            }
+        };
 
-    const TripCard = ({ trip }) => (
-        <div className="trip-card">
-            <div className="trip-image-container">
-                <img src={trip.image} alt={trip.title} className="trip-image" />
-                {trip.isRecommended && (
-                    <div className="recommended-badge">
-                        <Star size={12} />
-                        Recommended for you
+        fetchTrips();
+    }, [id]);
+
+
+    const addTrip = async () => {
+        if (!tripTitle || !tripLocation || !tripDate) {
+            setShowErrorMessage(true);
+            return;
+        }
+        const new_trip = {tripTitle, tripLocation, tripDate};
+        const updatedTrips = [...(info?.createTrip || []), new_trip];
+
+        try {
+            const response = await axios.put(
+                `/api/users/${id}`,
+                { ...info, createTrip: updatedTrips },
+                {headers: {Authorization: `Bearer ${token}`}}
+            );
+
+
+            const { token: newToken } = response.data;
+            setToken(newToken);
+            setShowSuccessMessage(true);
+            setShowCreateTrip(false);
+            setTripTitle('');
+            setTripLocation('');
+            setTripDate('');
+        } catch (error) {
+            console.error("Error creating trip:", error);
+            setShowErrorMessage(true);
+        }
+        const newTrip = {
+            tripTitle,
+            tripLocation,
+            tripDate,
+            userId: id
+        };
+
+        try {
+            const response1 = await axios.post('/api/trips', newTrip, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            setShowSuccessMessage(true);
+            setShowCreateTrip(false);
+            setTripTitle('');
+            setTripLocation('');
+            setTripDate('');
+        } catch (error) {
+            console.error("Error creating trip:", error);
+            setShowErrorMessage(true);
+        }
+    }
+
+
+        const handleInputChange = (e) => {
+            const {name, value} = e.target;
+            setFilters((prev) => ({...prev, [name]: value}));
+        };
+        const CreateTripModal = () => (
+            <div className="modal-overlay" onClick={() => setShowCreateTrip(false)}>
+                <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                    <div className="modal-header">
+                        <h2>Create New Trip</h2>
+                        <button onClick={() => setShowCreateTrip(false)} className="close-button">×</button>
                     </div>
-                )}
-                {trip.isTrending && (
-                    <div className="trending-badge">
-                        <TrendingUp size={12} />
-                        Trending
-                    </div>
-                )}
-            </div>
+                    <div className="create-trip-form">
+                        <div className="form-group">
+                            <label>Trip Title</label>
+                            <input
+                                type="text"
+                                placeholder="Enter trip title"
+                                value={tripTitle}
+                                onChange={(e) => setTripTitle(e.target.value)}
+                            />
+                        </div>
 
-            <div className="trip-content">
-                <div className="trip-header">
-                    <div className="creator-info">
-                        <img src={trip.creator.avatar} alt={trip.creator.name} className="creator-avatar" />
-                        <div className="creator-details">
-                            <div className="creator-name">
-                                {trip.creator.name}
-                                {trip.creator.isVerified && <Verified size={14} className="verified-icon" />}
+                        <div className="form-row">
+                            <div className="form-group">
+                                <label>Destination</label>
+                                <select
+                                    value={tripLocation}
+                                    onChange={(e) => setTripLocation(e.target.value)}
+                                    name="destination"
+                                >
+                                    <option value="">Select Province</option>
+                                    <option value="Western Province">Western Province</option>
+                                    <option value="Central Province">Central Province</option>
+                                    <option value="Southern Province">Southern Province</option>
+                                    <option value="Northern Province">Northern Province</option>
+                                    <option value="Eastern Province">Eastern Province</option>
+                                    <option value="North Western Province">North Western Province</option>
+                                    <option value="North Central Province">North Central Province</option>
+                                    <option value="Uva Province">Uva Province</option>
+                                    <option value="Sabaragamuwa Province">Sabaragamuwa Province</option>
+                                </select>
                             </div>
-                            <div className="creator-rating">
-                                <Star size={12} className="star-icon" />
-                                {trip.creator.rating}
+                            <div className="form-group">
+                                <label>Date</label>
+                                <input
+                                    type="date"
+                                    value={tripDate}
+                                    onChange={(e) => setTripDate(e.target.value)}
+                                />
                             </div>
+                        </div>
+
+                        <div className="form-row">
+                            <div className="form-group">
+                                <label>Duration</label>
+                                <select
+                                    name="duration"
+                                value={tripDuration}
+                                onChange={(e) => {setTripDuration(e.target.value)}}>
+                                    <option>1 day</option>
+                                    <option>2 days</option>
+                                    <option>3 days</option>
+                                    <option>4-7 days</option>
+                                    <option>1+ week</option>
+                                </select>
+                            </div>
+                            <div className="form-group">
+                                <label>Group Size</label>
+                                <input type='number' min='1' max='20' placeholder='1-20'></input>
+                            </div>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Budget Range</label>
+                            <select name="budget">
+                                <option>Under Rs.1000</option>
+                                <option>Rs.1000 - Rs.2000</option>
+                                <option>Rs.2000 - Rs.5000</option>
+                                <option>Rs.5000 - Rs.10000</option>
+                                <option>Rs.1000+</option>
+                            </select>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Description</label>
+                            <textarea
+                                placeholder="Describe your trip plans, what you'll do, and what kind of travel companions you're looking for..."
+                                rows="4"
+                            ></textarea>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Tags</label>
+                            <input
+                                type="text"
+                                placeholder="Adventure, Culture, Food, Nature..."
+                            />
+                        </div>
+
+                        <div className="modal-actions">
+                            <button type="button" className="cancel-button"
+                                    onClick={() => setShowCreateTrip(false)}>Cancel
+                            </button>
+                            <button type="button" className="create-button" onClick={addTrip}>Create Trip</button>
                         </div>
                     </div>
                 </div>
+            </div>
+        );
 
-                <h3 className="trip-title">{trip.title}</h3>
-                <p className="trip-description">{trip.description}</p>
+        const handleCreateTrip = () => {
+            setShowCreateTrip(true);
+        };
 
-                <div className="trip-tags">
-                    {trip.tags.map((tag, index) => (
-                        <span key={index} className="trip-tag">{tag}</span>
-                    ))}
-                </div>
+        // const handleLike = (tripId) => {
+        //     setTrips(trips.map(trip =>
+        //         trip.id === tripId
+        //             ? {...trip, likes: trip.likes + 1}
+        //             : trip
+        //     ));
+        // };
 
+    const TripCard = ({trip}) => (
+        <div className="class-container">
+            <div className="card">
+                <img src={sigiriya} alt="Sigiriya" className="card-image"/>
+                <p className="card-location">{trip.tripLocation}</p>
+                <h2 className="card-title">Sigiriya</h2>
                 <div className="trip-details">
                     <div className="trip-detail">
                         <MapPin size={16} />
-                        <span>{trip.destination}</span>
+                        <span className="trip-destination">destination</span>
                     </div>
                     <div className="trip-detail">
                         <Calendar size={16} />
-                        <span>{trip.date} • {trip.duration}</span>
+                        <span className="trip-date">Date </span>
+                        <span className="trip-duration">2 days ago </span>
                     </div>
                     <div className="trip-detail">
                         <Users size={16} />
-                        <span>{trip.currentMembers}/{trip.groupSize.split('-')[1].replace(' people', '')} joined</span>
+                        <span className="trip-members">5/8 joined</span>
                     </div>
                     <div className="trip-detail">
                         <DollarSign size={16} />
-                        <span>{trip.budget}</span>
+                        <span className="trip-budget">$200</span>
                     </div>
+                    {/*<div className="trip-detail">*/}
+                    {/*    <span className="trip-creator">Created by {trip.username}</span>*/}
+                    {/*</div>*/}
                 </div>
-
-                <div className="trip-actions">
-                    <button
-                        className="action-button like-button"
-                        onClick={() => handleLike(trip.id)}
-                    >
-                        <Heart size={18} />
-                        <span>{trip.likes}</span>
-                    </button>
-                    <button className="action-button">
-                        <MessageCircle size={18} />
-                        <span>{trip.comments}</span>
-                    </button>
-                    <button className="action-button">
-                        <Share2 size={18} />
-                        <span>Share</span>
-                    </button>
-                    <button className="join-button">Join Trip</button>
-                </div>
+                <Link to="#"  className="view-btn"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;View Details > </Link>
             </div>
         </div>
     );
 
-    const CreateTripModal = () => (
-        <div className="modal-overlay" onClick={() => setShowCreateTrip(false)}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                <div className="modal-header">
-                    <h2>Create New Trip</h2>
-                    <button onClick={() => setShowCreateTrip(false)} className="close-button">×</button>
-                </div>
-                <div className="create-trip-form">
-                    <div className="form-group">
-                        <label>Trip Title</label>
-                        <input type="text" placeholder="Enter trip title" />
-                    </div>
-                    <div className="form-row">
-                        <div className="form-group">
-                            <label>Destination</label>
-                            <select>
-                                <option>Select Province</option>
-                                <option>Western Province</option>
-                                <option>Central Province</option>
-                                <option>Southern Province</option>
-                                <option>Northern Province</option>
-                                <option>Eastern Province</option>
-                                <option>North Western Province</option>
-                                <option>North Central Province</option>
-                                <option>Uva Province</option>
-                                <option>Sabaragamuwa Province</option>
-                            </select>
-                        </div>
-                        <div className="form-group">
-                            <label>Date</label>
-                            <input type="date" />
-                        </div>
-                    </div>
-                    <div className="form-row">
-                        <div className="form-group">
-                            <label>Duration</label>
-                            <select>
-                                <option>1 day</option>
-                                <option>2 days</option>
-                                <option>3 days</option>
-                                <option>4-7 days</option>
-                                <option>1+ week</option>
-                            </select>
-                        </div>
-                        <div className="form-group">
-                            <label>Group Size</label>
-                            <select>
-                                <option>2-3 people</option>
-                                <option>4-6 people</option>
-                                <option>6-8 people</option>
-                                <option>8+ people</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <label>Budget Range</label>
-                        <select>
-                            <option>Under $50</option>
-                            <option>$50-100</option>
-                            <option>$100-200</option>
-                            <option>$200-500</option>
-                            <option>$500+</option>
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <label>Description</label>
-                        <textarea placeholder="Describe your trip plans, what you'll do, and what kind of travel companions you're looking for..." rows="4"></textarea>
-                    </div>
-                    <div className="form-group">
-                        <label>Tags</label>
-                        <input type="text" placeholder="Adventure, Culture, Food, Nature..." />
-                    </div>
-                    <div className="modal-actions">
-                        <button type="button" className="cancel-button" onClick={() => setShowCreateTrip(false)}>Cancel</button>
-                        <button type="button" className="create-button">Create Trip</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
 
     return (
         <div className="trip-feed-container">
@@ -296,6 +287,7 @@ const TripFeed = () => {
                 <img className='back_images' src={beach}></img>
             </div>
             </div>
+            {}
             {/*{user &&<div><br/><br/><br/><br/></div>}*/}
             {user && <div className="join_create_trips">
                 <div className='join-trip'>
@@ -312,6 +304,17 @@ const TripFeed = () => {
                 </div>
             </div>}
             {/*{!user && <div><br/><br/><br/><br/><br/><br/><br/></div>}*/}
+            <div className='my-trips'>
+            <h2>My trips</h2>
+            {user?.info?.createTrip?.length > 0 && (
+                <div className="trip-container">
+                    {user.info.createTrip.map((trip, index) => (
+                        <TripCard key={index} trip={trip} />
+                    ))}
+                </div>
+            )}
+            </div>
+
             <section className="section-container">
                 <div className="section-wrapper">
                     <div className="section-header">
@@ -353,7 +356,7 @@ const TripFeed = () => {
                 </div>
             </section>
             <br/>
-            <section className="hero-section">
+            {!user && <section className="hero-section">
                 <div className="container">
                     <h2 className="hero-title">Ready for Your Next Adventure?</h2>
                     <p className="hero-description">Join millions of travelers who trust Travago for their dream
@@ -362,7 +365,7 @@ const TripFeed = () => {
                         Start Tripping
                     </button></Link>
                 </div>
-            </section>
+            </section>}
 
             {/*<div className="feed-tabs">*/}
             {/*    <button*/}

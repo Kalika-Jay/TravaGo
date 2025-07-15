@@ -8,17 +8,20 @@ export const updateUserInfoRoute ={
     path:'/api/users/:userId',
     method:'put',
     handler:async (req,res)=>{
+        const db = getDbConnection('auth-db')
         const { authorization } = req.headers;
         const {userId} = req.params;
 
-        const updates = (({
+        const updates1 = (({
             name,
             age,
-            interests
+            interests,
+            createTrip
         })=>({
             name,
             age,
-            interests
+            interests,
+            createTrip
         }))(req.body)
 
         if (!authorization){
@@ -36,10 +39,10 @@ export const updateUserInfoRoute ={
             if(id!==userId){
                 return res.status(403).json({message:"Not allowed to update user"})
             }
-            const db = getDbConnection('auth-db')
+
             const result = await db.collection('users').findOneAndUpdate(
                 { _id: ObjectId(id) },
-                { $set: { info:updates } },
+                { $set: { info:updates1 } },
                 {returnOriginal:false}
             )
             const {username, isVerified,info} = result.value
