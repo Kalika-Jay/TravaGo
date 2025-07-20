@@ -1,5 +1,7 @@
+body{
+    background-image: url("");
+}
 .container-background-image{
-
     background-size: cover;
     background-position: center;
     height: 80vh;
@@ -41,7 +43,6 @@
 
 }
 .input-group {
-
    font-size: 1.1rem;
     font-family:Verdana ,arial,sans-serif;
     font-weight: bold;
@@ -134,6 +135,44 @@ checkbox-options {
     font-weight: bold;
     color: #2b4552;
 }
+@keyframes cardEntry {
+    0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes slideInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
 .class-container {
     display: flex;
     flex-wrap: wrap;
@@ -152,9 +191,38 @@ checkbox-options {
 
 }
 .card {
-    width:400px;
-    margin: 30px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+}
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #2b45528c, #667eea);
+    border-radius: 16px 16px 0 0;
+}
+.card-location {
+    color: #2b45528c;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
 
+.card-title {
+    color: #333;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
 }
 .card-image {
    width: 80%;
@@ -164,28 +232,17 @@ checkbox-options {
     border-radius: 15px;
 
 }
-.card-location{
-    margin-left: 50px;
-    margin-bottom: 7px;
-    color: dimgrey;
-
-}
-.card-title{
-    font-family: Arial,Verdana, Geneva, Tahoma, sans-serif;
-    font-weight: bold;
-    color: black;
-    margin-left: 50px;
-    margin-bottom: 7px;
-}
-.view-btn{
-    background-color: #2b4552;
+.view-btn {
+    display: inline-block;
     color: white;
-    border-radius: 15px;
-    margin-left: 40px;
-    padding: 10px;
     text-decoration: none;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 0.8rem;
+    font-size: 14px;
+    font-weight: 600;
+    padding:1rem;
+    margin-top: 16px;
+    text-align: center;
+    border-top: 1px solid #eee;
+    position: relative;
 }
 .feed-tabs {
     display: flex;
@@ -227,8 +284,94 @@ checkbox-options {
 .trip-detail {
     display: flex;
     align-items: center;
-    gap: 6px;
-    color:#2b4552;
-    font-size: 0.875rem;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(43, 69, 82, 0.05);
+    border-radius: 12px;
+    border-left: 3px solid #2b45528c;
+}
+.trip-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* or space-between */
+    gap: 20px;
+    padding: 20px;
+}
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+.trips{
+    animation: fade-in 1s;
+}
+.my-trips {
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.my-trips h2 {
+    color: #2b4552;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 50px;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.my-trips h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #2b45528c, white);
+    border-radius: 2px;
+}
+
+@keyframes titleSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.join{
+    color: #2b45528;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+}
+.trip-destination, .trip-date, .trip-members, .trip-budget, .trip-creator {
+    color: #333;
+    font-weight: 600;
+}
+
+.trip-duration {
+    color: #2b45528c;
+    font-weight: 600;
+}

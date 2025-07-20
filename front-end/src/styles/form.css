@@ -1,0 +1,326 @@
+/* Modern User Profile Form Styles */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+.user-profile {
+    margin:auto !important;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow:
+            0 20px 40px rgba(0, 0, 0, 0.1),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+    max-width: 500px;
+    width: 100%;
+    animation: slideUp 0.6s ease-out;
+    position: relative;
+    top: 6rem;
+    overflow: hidden;
+}
+
+.user-profile::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #2b4552,white);
+    background-size: 300% 100%;
+    animation: gradientShift 3s ease-in-out infinite;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.user-profile p {
+    color: #4a5568;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 30px;
+    text-align: center;
+    animation: fadeIn 0.8s ease-out 0.2s both;
+}
+
+.user-profile label {
+    display: block;
+    color: #2d3748;
+    font-weight: 600;
+    margin-bottom: 8px;
+    margin-top: 20px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    animation: fadeIn 0.8s ease-out 0.3s both;
+}
+
+.user-profile input,
+.user-profile select {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    background: white;
+    transition: all 0.3s ease;
+    animation: fadeIn 0.8s ease-out 0.4s both;
+    outline: none;
+    color: #2d3748;
+}
+
+.user-profile input:focus,
+.user-profile select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+}
+
+.user-profile input:hover,
+.user-profile select:hover {
+    border-color: #cbd5e0;
+    transform: translateY(-1px);
+}
+
+.user-profile select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 12px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    padding-right: 40px;
+    appearance: none;
+}
+
+.user-profile select option {
+    padding: 12px;
+    background: white;
+    color: #2d3748;
+}
+
+.user-profile div:last-of-type {
+    margin-top: 40px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    animation: fadeIn 0.8s ease-out 0.6s both;
+}
+
+.user-profile button {
+    flex: 1;
+    min-width: 120px;
+    padding: 16px 24px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.user-profile button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.user-profile button:hover::before {
+    left: 100%;
+}
+
+.user-profile button:first-of-type {
+    background: linear-gradient(135deg, #2b4552 0%);
+    color: white;
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.user-profile button:first-of-type:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(102, 126, 234, 0.4);
+}
+
+.user-profile button:first-of-type:active {
+    transform: translateY(0);
+}
+
+.user-profile button:nth-of-type(2) {
+    background: linear-gradient(135deg, #2b4552 0%);
+    color: white;
+    box-shadow: 0 8px 20px rgba(136, 136, 136, 0.3);
+}
+
+.user-profile button:nth-of-type(2):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(245, 87, 108, 0.4);
+}
+
+.user-profile button:last-of-type {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    color: white;
+    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+}
+
+.user-profile button:last-of-type:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(255, 107, 107, 0.4);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.success-message {
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    color: white;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+    text-align: center;
+    font-weight: 600;
+    animation: slideInRight 0.5s ease-out, pulse 0.6s ease-in-out;
+    box-shadow: 0 8px 20px rgba(72, 187, 120, 0.3);
+}
+
+.error-message {
+    background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+    color: white;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+    text-align: center;
+    font-weight: 600;
+    animation: slideInLeft 0.5s ease-out, pulse 0.6s ease-in-out;
+    box-shadow: 0 8px 20px rgba(245, 101, 101, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .user-profile {
+        padding: 30px 20px;
+        margin: 10px;
+    }
+
+    .user-profile div:last-of-type {
+        flex-direction: column;
+    }
+
+    .user-profile button {
+        min-width: 100%;
+    }
+}
+
+/* Loading animation for form elements */
+.user-profile input:disabled,
+.user-profile select:disabled {
+    background: #f7fafc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Floating label effect */
+.form-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+    transform: translateY(-25px) scale(0.8);
+    color: #667eea;
+}
+
+/*.form-group label {*/
+/*    position: absolute;*/
+/*    left: 20px;*/
+/*    top: 50%;*/
+/*    transform: translateY(-50%);*/
+/*    background: white;*/
+/*    padding: 0 8px;*/
+/*    transition: all 0.3s ease;*/
+/*    pointer-events: none;*/
+/*    color: #718096;*/
+/*}*/
+
+/* Smooth transitions for all interactive elements */
+* {
+    transition: all 0.3s ease;
+}
+
+/* Custom scrollbar for select dropdowns */
+.user-profile select::-webkit-scrollbar {
+    width: 8px;
+}
+
+.user-profile select::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.user-profile select::-webkit-scrollbar-thumb {
+    background: #667eea;
+    border-radius: 4px;
+}
+
+.user-profile select::-webkit-scrollbar-thumb:hover {
+    background: #5a6fd8;
+}

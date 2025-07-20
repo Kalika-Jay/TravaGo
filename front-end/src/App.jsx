@@ -10,15 +10,16 @@ import Layout from "./Layout.jsx";
 import LogIn from "./pages/LoginPage.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import PrivateRoute from "./auth/PrivateRoute.jsx";
+import Form from "./pages/signupFrom.jsx";
 
-const routes = [{path:'/login',element: <LogIn/>},{path:'/signup',element: <SignUp/>},
+const routes = [{path:'/login',element: <LogIn/>},{path:'/signup',element: <SignUp/>},{path:'/form',element: <Form/>},
     {path:'/',element:<Layout/>,children:[
         {path:'/',element:<HomePage/>},
             {path:'/userprofile',element:<PrivateRoute><UserProfile/></PrivateRoute>},
             {path:'/discovery',element:<Discovery/>},
             {path:'/map',element:<Map/>},
             {path:'/contact',element:<PrivateRoute><Contact/></PrivateRoute>},
-            {path:'/feedback',element:<PrivateRoute><Feedback/></PrivateRoute>}
+            {path:'/feedback',element:<PrivateRoute><Feedback/></PrivateRoute>},
         ]},
 ]
 const router = createBrowserRouter(routes)

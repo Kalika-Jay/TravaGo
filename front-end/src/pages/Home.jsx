@@ -12,6 +12,7 @@ import axios from "axios";
 import useToken from "../auth/useToken.jsx";
 import {info} from "autoprefixer";
 import sigiriya from "../assets/Sigiriya.jpg";
+import useUser from "../auth/useUser.jsx";
 
 const TripFeed = () => {
     const user = useUsers(); // Assuming this hook returns the user object
@@ -20,6 +21,8 @@ const TripFeed = () => {
     const [tripLocation, setTripLocation] = useState('');
     const [tripDate, setTripDate] = useState('');
     const [tripDuration, setTripDuration] = useState('');
+    const [tripBudget, setTripBudget] = useState('');
+    const [tripGrpsize,setTripGrpsize] = useState('');
     const [activeTab, setActiveTab] = useState('feed');
     const [trips, setTrips] = useState([]);
     const [filters, setFilters] = useState({
@@ -33,10 +36,18 @@ const TripFeed = () => {
     const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [createTrip, setCreateTrip] = useState([]);
 
+    const [result, setResult] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
     // Destructure user safely using optional chaining
     const id = user?.id;
     const username = user?.username;
     const info = user?.info;
+
+    const value1= info?.language
+    const value2= info?.interests
+    const value3= info?.age
+    const value4= info?.budget
 
     useEffect(() => {
         if (showSuccessMessage || showErrorMessage) {
@@ -68,7 +79,7 @@ const TripFeed = () => {
             setShowErrorMessage(true);
             return;
         }
-        const new_trip = {tripTitle, tripLocation, tripDate};
+        const new_trip = {tripTitle, tripLocation, tripDate,tripDuration, tripBudget, tripGrpsize};
         const updatedTrips = [...(info?.createTrip || []), new_trip];
 
         try {
@@ -91,10 +102,13 @@ const TripFeed = () => {
             setShowErrorMessage(true);
         }
         const newTrip = {
+            userId: id,
             tripTitle,
             tripLocation,
             tripDate,
-            userId: id
+            tripDuration,
+            tripBudget,
+            tripGrpsize
         };
 
         try {
@@ -118,111 +132,9 @@ const TripFeed = () => {
             const {name, value} = e.target;
             setFilters((prev) => ({...prev, [name]: value}));
         };
-        const CreateTripModal = () => (
-            <div className="modal-overlay" onClick={() => setShowCreateTrip(false)}>
-                <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                    <div className="modal-header">
-                        <h2>Create New Trip</h2>
-                        <button onClick={() => setShowCreateTrip(false)} className="close-button">×</button>
-                    </div>
-                    <div className="create-trip-form">
-                        <div className="form-group">
-                            <label>Trip Title</label>
-                            <input
-                                type="text"
-                                placeholder="Enter trip title"
-                                value={tripTitle}
-                                onChange={(e) => setTripTitle(e.target.value)}
-                            />
-                        </div>
-
-                        <div className="form-row">
-                            <div className="form-group">
-                                <label>Destination</label>
-                                <select
-                                    value={tripLocation}
-                                    onChange={(e) => setTripLocation(e.target.value)}
-                                    name="destination"
-                                >
-                                    <option value="">Select Province</option>
-                                    <option value="Western Province">Western Province</option>
-                                    <option value="Central Province">Central Province</option>
-                                    <option value="Southern Province">Southern Province</option>
-                                    <option value="Northern Province">Northern Province</option>
-                                    <option value="Eastern Province">Eastern Province</option>
-                                    <option value="North Western Province">North Western Province</option>
-                                    <option value="North Central Province">North Central Province</option>
-                                    <option value="Uva Province">Uva Province</option>
-                                    <option value="Sabaragamuwa Province">Sabaragamuwa Province</option>
-                                </select>
-                            </div>
-                            <div className="form-group">
-                                <label>Date</label>
-                                <input
-                                    type="date"
-                                    value={tripDate}
-                                    onChange={(e) => setTripDate(e.target.value)}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="form-row">
-                            <div className="form-group">
-                                <label>Duration</label>
-                                <select
-                                    name="duration"
-                                value={tripDuration}
-                                onChange={(e) => {setTripDuration(e.target.value)}}>
-                                    <option>1 day</option>
-                                    <option>2 days</option>
-                                    <option>3 days</option>
-                                    <option>4-7 days</option>
-                                    <option>1+ week</option>
-                                </select>
-                            </div>
-                            <div className="form-group">
-                                <label>Group Size</label>
-                                <input type='number' min='1' max='20' placeholder='1-20'></input>
-                            </div>
-                        </div>
-
-                        <div className="form-group">
-                            <label>Budget Range</label>
-                            <select name="budget">
-                                <option>Under Rs.1000</option>
-                                <option>Rs.1000 - Rs.2000</option>
-                                <option>Rs.2000 - Rs.5000</option>
-                                <option>Rs.5000 - Rs.10000</option>
-                                <option>Rs.1000+</option>
-                            </select>
-                        </div>
-
-                        <div className="form-group">
-                            <label>Description</label>
-                            <textarea
-                                placeholder="Describe your trip plans, what you'll do, and what kind of travel companions you're looking for..."
-                                rows="4"
-                            ></textarea>
-                        </div>
-
-                        <div className="form-group">
-                            <label>Tags</label>
-                            <input
-                                type="text"
-                                placeholder="Adventure, Culture, Food, Nature..."
-                            />
-                        </div>
-
-                        <div className="modal-actions">
-                            <button type="button" className="cancel-button"
-                                    onClick={() => setShowCreateTrip(false)}>Cancel
-                            </button>
-                            <button type="button" className="create-button" onClick={addTrip}>Create Trip</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
+        // const CreateTripModal = () => (
+        //
+        // );
 
         const handleCreateTrip = () => {
             setShowCreateTrip(true);
@@ -235,7 +147,27 @@ const TripFeed = () => {
         //             : trip
         //     ));
         // };
+    const predict = async () => {
+        const inputData = {
+            Language: value1,
+            Interest: value2,
+            Age: value3,
+            Budget: value4,
+        };
 
+
+        if (isLoading) return;
+
+        setIsLoading(true);
+        setResult('Predicting');
+
+        // Simulate prediction delay
+        setTimeout(async () => {
+            const res = await axios.post('/api/predict', inputData);
+            setResult(res.data.prediction);
+            setIsLoading(false);
+        }, 2000)
+    }
     const TripCard = ({trip}) => (
         <div className="class-container">
             <div className="card">
@@ -303,18 +235,16 @@ const TripFeed = () => {
                     </button>
                 </div>
             </div>}
-            {/*{!user && <div><br/><br/><br/><br/><br/><br/><br/></div>}*/}
-            <div className='my-trips'>
-            <h2>My trips</h2>
-            {user?.info?.createTrip?.length > 0 && (
-                <div className="trip-container">
-                    {user.info.createTrip.map((trip, index) => (
-                        <TripCard key={index} trip={trip} />
-                    ))}
-                </div>
-            )}
+            {user&&<div className='predict-section'>
+                <h2>Having troubles deciding where to go .........</h2>
+                <p>Let us decide it for you</p>
+            <button className='predict-button' onClick={predict}>Suggest Destination</button><br/><br/><br/>
+            <p className={`pred ${isLoading ? 'loading' : result ? 'show' : ''}`}>
+                {result}
+            </p>
             </div>
-
+            }
+            {!user&&
             <section className="section-container">
                 <div className="section-wrapper">
                     <div className="section-header">
@@ -355,6 +285,7 @@ const TripFeed = () => {
                     </div>
                 </div>
             </section>
+            }
             <br/>
             {!user && <section className="hero-section">
                 <div className="container">
@@ -367,77 +298,138 @@ const TripFeed = () => {
                 </div>
             </section>}
 
-            {/*<div className="feed-tabs">*/}
-            {/*    <button*/}
-            {/*        className={`tab-button ${activeTab === 'feed' ? 'active' : ''}`}*/}
-            {/*        onClick={() => setActiveTab('feed')}*/}
-            {/*    >*/}
-            {/*        Activity Feed*/}
-            {/*    </button>*/}
-            {/*    <button*/}
-            {/*        className={`tab-button ${activeTab === 'recommended' ? 'active' : ''}`}*/}
-            {/*        onClick={() => setActiveTab('recommended')}*/}
-            {/*    >*/}
-            {/*        Recommended*/}
-            {/*    </button>*/}
-            {/*    <button*/}
-            {/*        className={`tab-button ${activeTab === 'trending' ? 'active' : ''}`}*/}
-            {/*        onClick={() => setActiveTab('trending')}*/}
-            {/*    >*/}
-            {/*        Trending*/}
-            {/*    </button>*/}
-            {/*</div>*/}
+            {showCreateTrip && <div className="modal-overlay" onClick={() => setShowCreateTrip(false)}>
+                <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                    <div className="modal-header">
+                        <h2>Create New Trip</h2>
+                        <button onClick={() => setShowCreateTrip(false)} className="close-button">×</button>
+                    </div>
+                    <div className="create-trip-form">
+                        <div className="form-group">
+                            <label>Trip Title</label>
+                            <input
+                                type="text"
+                                placeholder="Enter trip title"
+                                value={tripTitle}
+                                onChange={(e) => setTripTitle(e.target.value)}
+                            />
+                        </div>
 
-            {/*<div className="feed-filters">*/}
-            {/*    <div className="filter-group">*/}
-            {/*        <Filter size={16} />*/}
-            {/*        <select*/}
-            {/*            value={filters.destination}*/}
-            {/*            onChange={(e) => setFilters({...filters, destination: e.target.value})}*/}
-            {/*        >*/}
-            {/*            <option value="">All Destinations</option>*/}
-            {/*            <option value="western">Western Province</option>*/}
-            {/*            <option value="central">Central Province</option>*/}
-            {/*            <option value="southern">Southern Province</option>*/}
-            {/*        </select>*/}
-            {/*    </div>*/}
-            {/*    <div className="filter-group">*/}
-            {/*        <select*/}
-            {/*            value={filters.budget}*/}
-            {/*            onChange={(e) => setFilters({...filters, budget: e.target.value})}*/}
-            {/*        >*/}
-            {/*            <option value="">Any Budget</option>*/}
-            {/*            <option value="low">Under $100</option>*/}
-            {/*            <option value="medium">$100-300</option>*/}
-            {/*            <option value="high">$300+</option>*/}
-            {/*        </select>*/}
-            {/*    </div>*/}
-            {/*    <div className="filter-group">*/}
-            {/*        <select*/}
-            {/*            value={filters.groupSize}*/}
-            {/*            onChange={(e) => setFilters({...filters, groupSize: e.target.value})}*/}
-            {/*        >*/}
-            {/*            <option value="">Any Group Size</option>*/}
-            {/*            <option value="small">2-4 people</option>*/}
-            {/*            <option value="medium">5-7 people</option>*/}
-            {/*            <option value="large">8+ people</option>*/}
-            {/*        </select>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
+                        <div className="form-row">
+                            <div className="form-group">
+                                <label>Destination</label>
+                                <select
+                                    value={tripLocation}
+                                    onChange={(e) => setTripLocation(e.target.value)}
+                                    name="destination"
+                                >
+                                    <option value=''>Select Destination</option>
+                                    <option value="Sinharaja">Sinharaja</option>
+                                    <option value="Kanduboda">Kanduboda</option>
+                                    <option value="Ella">Ella</option>
+                                    <option value="Nilaveli">Nilaveli</option>
+                                    <option value="Polonnaruwa">Polonnaruwa</option>
+                                    <option value="Colombo">Colombo</option>
+                                    <option value="Sigiriya">Sigiriya</option>
+                                    <option value="Mirissa">Mirissa</option>
+                                    <option value="Anuradhapura">Anuradhapura</option>
+                                    <option value="Hill Country">Hill Country</option>
+                                    <option value="Nilambe">Nilambe</option>
+                                    <option value="Arugam Bay">Arugam Bay</option>
+                                    <option value="Pasikuda">Pasikuda</option>
+                                    <option value="Horton Plains">Horton Plains</option>
+                                    <option value="Knuckles">Knuckles</option>
+                                    <option value="Bentota">Bentota</option>
+                                    <option value="Adam’s Peak">Adam’s Peak</option>
+                                    <option value="Pigeon Island">Pigeon Island</option>
+                                    <option value="Unawatuna">Unawatuna</option>
+                                    <option value="Hikkaduwa">Hikkaduwa</option>
+                                    <option value="Yala">Yala</option>
+                                    <option value="Galle">Galle</option>
+                                    <option value="Trincomalee">Trincomalee</option>
+                                    <option value="Pidurangala">Pidurangala</option>
+                                    <option value="Dambulla">Dambulla</option>
+                                    <option value="Kalpitiya">Kalpitiya</option>
+                                    <option value="Kitulgala">Kitulgala</option>
+                                    <option value="Kandy">Kandy</option>
+                                    <option value="Southern Coast">Southern Coast</option>
+                                    <option value="Cultural Triangle">Cultural Triangle</option>
+                                    <option value="Beruwala">Beruwala</option>
+                                    <option value="Hanthana">Hanthana</option>
+                                    <option value="Galle Fort">Galle Fort</option>
+                                    <option value="Udawalawe">Udawalawe</option>
+                                    <option value="Nuwara Eliya">Nuwara Eliya</option>
+                                    <option value="Wilpattu">Wilpattu</option>
+                                    <option value="Belihuloya">Belihuloya</option>
 
-            {/*<div className="trips-grid">*/}
-            {/*    {trips*/}
-            {/*        .filter(trip => {*/}
-            {/*            if (activeTab === 'recommended') return trip.isRecommended;*/}
-            {/*            if (activeTab === 'trending') return trip.isTrending;*/}
-            {/*            return true;*/}
-            {/*        })*/}
-            {/*        .map(trip => (*/}
-            {/*            <TripCard key={trip.id} trip={trip} />*/}
-            {/*        ))*/}
-            {/*    }*/}
-            {/*</div>*/}
-            {showCreateTrip && <CreateTripModal/>}
+                                </select>
+                            </div>
+                            <div className="form-group">
+                                <label>Date</label>
+                                <input
+                                    type="date"
+                                    value={tripDate}
+                                    onChange={(e) => setTripDate(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="form-row">
+                            <div className="form-group">
+                                <label>Duration</label>
+                                <select
+                                    name="duration"
+                                    value={tripDuration}
+                                    onChange={(e) => {setTripDuration(e.target.value)}}>
+                                    <option>1 day</option>
+                                    <option>2 days</option>
+                                    <option>3 days</option>
+                                    <option>4-7 days</option>
+                                    <option>1+ week</option>
+                                </select>
+                            </div>
+                            <div className="form-group">
+                                <label>Group Size</label>
+                                <input type='number' min='1' max='20' placeholder='1-20' value={tripGrpsize} onChange={e =>setTripGrpsize(e.target.value) }></input>
+                            </div>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Budget Range</label>
+                            <select name="budget" value={tripBudget} onChange={e => setTripBudget(e.target.value)}>
+                                <option>Under Rs.1000</option>
+                                <option>Rs.1000 - Rs.2000</option>
+                                <option>Rs.2000 - Rs.5000</option>
+                                <option>Rs.5000 - Rs.10000</option>
+                                <option>Rs.1000+</option>
+                            </select>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Description</label>
+                            <textarea
+                                placeholder="Describe your trip plans, what you'll do, and what kind of travel companions you're looking for..."
+                                rows="4"
+                            ></textarea>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Tags</label>
+                            <input
+                                type="text"
+                                placeholder="Adventure, Culture, Food, Nature..."
+                            />
+                        </div>
+
+                        <div className="modal-actions">
+                            <button type="button" className="cancel-button"
+                                    onClick={() => setShowCreateTrip(false)}>Cancel
+                            </button>
+                            <button type="button" className="create-button" onClick={addTrip}>Create Trip</button>
+                        </div>
+                    </div>
+                </div>
+            </div>}
         </div>
     );
 };

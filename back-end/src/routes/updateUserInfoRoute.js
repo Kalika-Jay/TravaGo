@@ -15,12 +15,18 @@ export const updateUserInfoRoute ={
         const updates1 = (({
             name,
             age,
+            budget,
             interests,
+            location,
+            language,
             createTrip
         })=>({
             name,
             age,
+            budget,
             interests,
+            location,
+            language,
             createTrip
         }))(req.body)
 

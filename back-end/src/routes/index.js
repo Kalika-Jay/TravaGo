@@ -4,6 +4,7 @@ import {updateUserInfoRoute} from "./updateUserInfoRoute.js";
 import {addTripRoutes} from "./createTripRoute.js";
 import {tripsRoute} from "./tripsRoute.js";
 import {getTripRoutes} from "./getTripRoutes.js";
+import {predict} from "./predict.js";
 
 
-export const routes = [signUpRoute, loginRoute, updateUserInfoRoute,addTripRoutes, tripsRoute, getTripRoutes];
+export const routes = [signUpRoute, loginRoute, updateUserInfoRoute,addTripRoutes, tripsRoute, getTripRoutes,predict];

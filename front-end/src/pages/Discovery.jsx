@@ -6,9 +6,12 @@
  import { Link } from 'react-router-dom';
  import { Heart, MessageCircle, Share2, MapPin, Calendar, Users, DollarSign, Star, Verified, Plus, Filter, TrendingUp } from 'lucide-react' ;
  import axios from "axios";
+ import useUser from "../auth/useUser.jsx";
 
 
  export default function Discovery(){
+     const user = useUser();
+     const username = user.info.name;
      const [budget, setBudget] = useState(500);
      const [selectedModes, setSelectedModes] = useState([]);
      const [trips, setTrips] = useState([]);
@@ -32,41 +35,41 @@
      };
      fetchTrips();
      const TripCard = ({trip}) => (
-             <div className="class-container">
-                 <div className="card">
-                     <img src={sigiriya} alt="Sigiriya" className="card-image"/>
-                     <p className="card-location">{trip.tripLocation}</p>
-                     <h2 className="card-title">Sigiriya</h2>
-                     <div className="trip-details">
-                         <div className="trip-detail">
-                             <MapPin size={16} />
-                             <span className="trip-destination">destination</span>
-                         </div>
-                         <div className="trip-detail">
-                             <Calendar size={16} />
-                             <span className="trip-date">Date </span>
-                             <span className="trip-duration">2 days ago </span>
-                         </div>
-                         <div className="trip-detail">
-                             <Users size={16} />
-                             <span className="trip-members">5/8 joined</span>
-                         </div>
-                         <div className="trip-detail">
-                             <DollarSign size={16} />
-                             <span className="trip-budget">$200</span>
-                         </div>
-                         <div className="trip-detail">
-                             <span className="trip-creator">Created by {trip.username}</span>
-                         </div>
+         <div className="class-container">
+             <div className="card">
+                 <h2 className="card-title">{trip.tripTitle}</h2>
+                 <div className="trip-details">
+                     <div className="trip-detail">
+                         <MapPin size={16}/>
+                         <span className="trip-destination">{trip.tripLocation}</span>
                      </div>
-                     <Link to="#"  className="view-btn"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;View Details > </Link>
+                     <div className="trip-detail">
+                         <Calendar size={16}/>
+                         <span className="trip-date">Date </span>
+                         <span className="trip-duration">{trip.tripDate}</span>
+                     </div>
+                     <div className="trip-detail">
+                         <Users size={16}/>
+                         <span className="trip-members">{trip.tripGrpsize} People</span>
+                     </div>
+                     <div className="trip-detail">
+                         <DollarSign size={16}/>
+                         <span className="trip-budget">{trip.tripBudget}</span>
+                     </div>
+                     <div className="trip-detail">
+                         <span className="trip-creator">Created by {trip.username}</span>
+                     </div>
+                     <button className='join'>Join Trip</button>
                  </div>
+                 <Link to="#"
+                       className="view-btn">View Details ---</Link>
              </div>
+         </div>
      );
 
      return (
 
-     <>
+     <div className='trips'>
          <div className = "container-background-image" style={{
              backgroundImage: `url(${imageTitle})`,
          }}>
@@ -153,13 +156,31 @@
                  Trending
              </button>
          </div>
-         {trips&& (
+         <div className='my-trips'>
+             {user?.info?.createTrip?.length > 0 && (
+                 <div>
+                 <h2>My trips</h2>
+                 <div className="trip-container">
+                     {user.info.createTrip.map((trip, index) => (
+                         <TripCard key={index} trip={trip} />
+                     ))}
+                 </div>
+                 </div>
+             )}
+         </div>
+         <div className='my-trips'>
+             <h2>Other Trips</h2>
+         {trips &&
              <div className="trip-container">
-                 {trips.map((trip, index) => (
-                     <TripCard key={index} trip={trip} />
-                 ))}
+                 {trips
+                     .filter(trip => trip.username !== username)
+                     .map((trip, index) => (
+                         <TripCard key={index} trip={trip} />
+                     ))}
              </div>
-         )}
+         }
+         </div>
+
          {/*<div className="class-container">*/}
          {/*    <div className="card">*/}
          {/*        <img src={sigiriya} alt="Sigiriya" className="card-image"/>*/}
@@ -187,6 +208,6 @@
          {/*        <Link to="#"  className="view-btn"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;View Details > </Link>*/}
          {/*    </div>*/}
          {/*</div>*/}
-         </>
+         </div>
     );
  }

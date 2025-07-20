@@ -31,7 +31,13 @@ export default function Map() {
         setActiveButton(!activeButton);
     };
     return (
-        <>
+        <div className="map">
+            {!activeButton &&
+            <div className="map-title">
+                <h1>Map</h1>
+                <h2>of</h2>
+                <h1>Sri Lanka</h1>
+            </div>}
             <div className={activeButton? 'mapdiv_active':'mapdiv'}>
                 <svg viewBox="0 0 1000 1745" xmlns="http://www.w3.org/2000/svg">
                     <a
@@ -461,6 +467,6 @@ export default function Map() {
                 </div>
 
             </div>
-        </>
+        </div>
     );
 }

@@ -1,6 +1,9 @@
 import {Link} from 'react-router-dom'
 import './styles/Navbar.css'
+import useUser from "./auth/useUser.jsx";
+
 export default function NavBar(){
+    const user = useUser();
     return (
         <>
             <div className="navbar-container">
@@ -16,11 +19,13 @@ export default function NavBar(){
                         <li><Link to='/feedback'>Feedback</Link></li>
                     </ul>
                 </nav>
+                {user&&
                 <div className="pp" >
                     <Link to='/userprofile'>
                     <img className="profile_pic" src="src/assets/user.png" alt="user" />
                     </Link>
                 </div>
+                }
             </div>
 
         </>

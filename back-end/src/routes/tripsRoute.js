@@ -7,7 +7,7 @@ export const tripsRoute = {
     path: '/api/trips',
     method: 'post',
     handler: async (req, res) => {
-        const { tripTitle, tripLocation, tripDate, userId} = req.body;
+        const { tripTitle, tripLocation, tripDate, userId,tripDuration, tripBudget, tripGrpsize} = req.body;
         const db = getDbConnection('auth-db');
         const user = await db.collection('users').findOne({ _id: ObjectId(userId) });
 
@@ -21,7 +21,7 @@ export const tripsRoute = {
                 username:user.username,
                 tripTitle,
                 tripLocation,
-                tripDate,
+                tripDate,tripDuration, tripBudget, tripGrpsize,
                 userId: ObjectId(userId),
                 createdAt: new Date()
             });

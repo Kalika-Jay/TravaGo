@@ -20,7 +20,7 @@ export default function SignUp(){
         })
         const {token} = response.data;
         setToken(token);
-        navigate('/');
+        navigate('/form');
     }
     return (
         <>

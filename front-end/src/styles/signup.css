@@ -1,58 +1,340 @@
+/* signup.css */
+
 .login_container {
-    width: 350px;
-    margin: 100px auto;
-    padding: 30px;
-    background-color: #f9f9f9;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin:auto;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    position: relative;
+    top: 6rem;
+    overflow: hidden;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login_container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #2b4552, transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
 }
 
 .login_container h1 {
-    margin-bottom: 20px;
-    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #2b4552;
+    font-size: 2.2rem;
+    font-weight: 700;
+    position: relative;
+    animation: slideInDown 0.6s ease-out;
+}
+
+.login_container h1::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #2b4552, #3b82f6);
+    border-radius: 2px;
+    animation: expandWidth 0.8s ease-out 0.3s both;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes expandWidth {
+    from {
+        width: 0;
+    }
+    to {
+        width: 60px;
+    }
 }
 
 .login_container input {
-    width: 90%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
+    width: 100%;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+    position: relative;
     outline: none;
-    transition: border-color 0.3s;
+    opacity: 0;
+    animation: slideInRight 0.6s ease-out forwards;
+}
+
+.login_container input:nth-of-type(1) { animation-delay: 0.2s; }
+.login_container input:nth-of-type(2) { animation-delay: 0.4s; }
+.login_container input:nth-of-type(3) { animation-delay: 0.6s; }
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .login_container input:focus {
-    border-color: #007BFF;
+    border-color: #2b4552;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+    transform: translateY(-2px);
+}
+
+.login_container input::placeholder {
+    color: #94a3b8;
+    font-weight: 400;
+    transition: all 0.3s ease;
+}
+
+.login_container input:focus::placeholder {
+    color: #64748b;
+    transform: translateY(-2px);
 }
 
 .login_container button {
-    width: 95%;
-    padding: 10px;
-    margin-top: 15px;
+    width: 100%;
+    padding: 15px 20px;
+    margin-bottom: 15px;
     border: none;
-    border-radius: 6px;
-    background-color: #007BFF;
-    color: white;
-    font-size: 16px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: slideInLeft 0.6s ease-out forwards;
 }
 
-.login_container button:hover:not(:disabled) {
-    background-color: #0056b3;
+.login_container button:nth-of-type(1) { animation-delay: 0.8s; }
+.login_container button:nth-of-type(2) { animation-delay: 1s; }
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
-.login_container button:disabled {
-    background-color: #aaa;
+/* Primary Sign Up Button */
+.login_container button:first-of-type {
+    background: linear-gradient(135deg, #2b4552 0%, #3b82f6 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
+}
+
+.login_container button:first-of-type::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.login_container button:first-of-type:hover::before {
+    left: 100%;
+}
+
+.login_container button:first-of-type:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(30, 58, 138, 0.4);
+}
+
+.login_container button:first-of-type:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
+}
+
+.login_container button:first-of-type:disabled {
+    background: linear-gradient(135deg, #94a3b8 0%, #cbd5e1 100%);
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
+.login_container button:first-of-type:disabled::before {
+    display: none;
+}
+
+/* Secondary Login Button */
+.login_container button:last-of-type {
+    background: transparent;
+    color: #2b4552;
+    border: 2px solid #2b4552;
+    font-weight: 500;
+}
+
+.login_container button:last-of-type:hover {
+    background: #2b4552;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.2);
+}
+
+.login_container button:last-of-type:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(30, 58, 138, 0.2);
+}
+
+/* Error Message */
 .error {
-    color: red;
-    font-size: 14px;
-    margin-bottom: 10px;
+    background: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    animation: shake 0.5s ease-out, slideInDown 0.5s ease-out;
+    position: relative;
+}
+
+.error::before {
+    content: '⚠️';
+    margin-right: 8px;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Loading state for buttons */
+.login_container button.loading {
+    position: relative;
+    color: transparent;
+}
+
+.login_container button.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .login_container {
+        margin: 20px;
+        padding: 30px 25px;
+    }
+
+    .login_container h1 {
+        font-size: 1.8rem;
+        margin-bottom: 25px;
+    }
+
+    .login_container input,
+    .login_container button {
+        padding: 12px 16px;
+        font-size: 1rem;
+    }
+
+    .login_container input {
+        margin-bottom: 15px;
+    }
+
+    .login_container button {
+        margin-bottom: 12px;
+    }
+}
+
+/* Focus indicator improvements */
+.login_container input:focus-visible {
+    outline: 2px solid #2b4552;
+    outline-offset: 2px;
+}
+
+.login_container button:focus-visible {
+    outline: 2px solid #2b4552;
+    outline-offset: 2px;
+}
+
+/* Custom animations for form validation */
+.login_container input.invalid {
+    border-color: #dc2626;
+    animation: invalidShake 0.3s ease-out;
+}
+
+@keyframes invalidShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+}
+
+.login_container input.valid {
+    border-color: #16a34a;
+    background: rgba(240, 253, 244, 0.5);
+}
+
+/* Smooth transitions for all interactive elements */
+.login_container * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
