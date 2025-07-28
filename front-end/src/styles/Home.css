@@ -1494,3 +1494,293 @@
         font-size: 1.1rem;
     }
 }
+/* Dark Mode Toggle Button */
+.dark-mode-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: var(--toggle-bg, #fff);
+    border: 2px solid var(--toggle-border, #e1e5e9);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode-toggle svg {
+    color: var(--toggle-icon, #333);
+    transition: color 0.3s ease;
+}
+
+/* Dark Theme Styles */
+.dark-theme {
+    --bg-primary: #1a1a2e;
+    --bg-secondary: #16213e;
+    --bg-tertiary: #0f3460;
+    --text-primary: #ffffff;
+    --text-secondary: #b8c5d6;
+    --text-muted: #8892a6;
+    --border-color: #2a3441;
+    --card-bg: #16213e;
+    --modal-bg: #1a1a2e;
+    --input-bg: #0f3460;
+    --button-primary: #4f46e5;
+    --button-secondary: #374151;
+    --toggle-bg: #16213e;
+    --toggle-border: #2a3441;
+    --toggle-icon: #ffffff;
+}
+
+.dark-theme,
+.dark-theme * {
+    color: var(--text-primary);
+}
+
+/* Container backgrounds */
+.dark-theme .trip-feed-container {
+    background: var(--bg-primary);
+    min-height: 100vh;
+}
+
+/*.dark-theme .feed-header {*/
+/*    background: var(--bg-secondary);*/
+/*}*/
+
+.dark-theme .header-content-home {
+    color: var(--text-primary);
+}
+
+.dark-theme .hi,
+.dark-theme .name,
+.dark-theme .description {
+    color: var(--text-primary);
+}
+
+/* Cards and sections */
+.dark-theme .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/*.dark-theme .section-container {*/
+/*    background: var(--bg-secondary);*/
+/*}*/
+
+.dark-theme .section-title,
+.dark-theme .section-subtitle {
+    color: var(--text-primary);
+}
+
+.dark-theme .feature-title {
+    color: var(--text-primary);
+}
+
+.dark-theme .feature-description {
+    color: var(--text-secondary);
+}
+
+/*.dark-theme .hero-section {*/
+/*    background: var(--bg-tertiary);*/
+/*}*/
+
+.dark-theme .hero-title,
+.dark-theme .hero-description {
+    color: var(--text-primary);
+}
+
+/* Buttons */
+.dark-theme .join,
+.dark-theme .create-button,
+.dark-theme .predict-button,
+.dark-theme .cta-button {
+    background: var(--button-primary);
+    color: white;
+    border: none;
+}
+
+.dark-theme .join:hover,
+.dark-theme .create-button:hover,
+.dark-theme .predict-button:hover,
+.dark-theme .cta-button:hover {
+    background: #3730a3;
+    transform: translateY(-2px);
+}
+
+.dark-theme .cancel-button {
+    background: var(--button-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.dark-theme .cancel-button:hover {
+    background: #4b5563;
+}
+
+/* Trip creation sections */
+.dark-theme .join_create_trips {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.dark-theme .join-trip,
+.dark-theme .create-trip {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+}
+
+.dark-theme .join-trip p,
+.dark-theme .create-trip p {
+    color: var(--text-primary);
+}
+
+.dark-theme .predict-section {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.dark-theme .predict-section h2,
+.dark-theme .predict-section p {
+    color: var(--text-primary);
+}
+
+/* Modal styles */
+.dark-theme .modal-overlay {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.dark-theme .modal-content {
+    background: var(--modal-bg);
+    border: 1px solid var(--border-color);
+}
+
+.dark-theme .modal-header h2 {
+    color: var(--text-primary);
+}
+
+.dark-theme .close-button {
+    color: var(--text-primary);
+    background: transparent;
+    border: none;
+}
+
+.dark-theme .close-button:hover {
+    background: var(--bg-tertiary);
+}
+
+/* Form elements */
+.dark-theme .form-group label {
+    color: var(--text-primary);
+}
+
+.dark-theme .form-group input,
+.dark-theme .form-group select,
+.dark-theme .form-group textarea {
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.dark-theme .form-group input::placeholder,
+.dark-theme .form-group textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.dark-theme .form-group input:focus,
+.dark-theme .form-group select:focus,
+.dark-theme .form-group textarea:focus {
+    border-color: var(--button-primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Trip details */
+.dark-theme .trip-details {
+    color: var(--text-secondary);
+}
+
+.dark-theme .trip-detail span {
+    color: var(--text-secondary);
+}
+
+.dark-theme .card-location,
+.dark-theme .card-title {
+    color: var(--text-primary);
+}
+
+.dark-theme .view-btn {
+    color: var(--button-primary);
+}
+
+.dark-theme .view-btn:hover {
+    color: #3730a3;
+}
+
+/* Prediction result */
+.dark-theme .pred {
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+}
+
+/* Success/Error messages */
+.dark-theme .success-message {
+    background: #065f46;
+    color: #d1fae5;
+    border: 1px solid #059669;
+}
+
+.dark-theme .error-message {
+    background: #7f1d1d;
+    color: #fecaca;
+    border: 1px solid #dc2626;
+}
+
+/* Scrollbar for dark mode */
+.dark-theme ::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dark-theme ::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+.dark-theme ::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.dark-theme ::-webkit-scrollbar-thumb:hover {
+    background: #4b5563;
+}
+
+/* Smooth transitions for theme switching */
+.trip-feed-container,
+.trip-feed-container * {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Media queries for mobile */
+@media (max-width: 768px) {
+    .dark-mode-toggle {
+        top: 15px;
+        right: 15px;
+        width: 45px;
+        height: 45px;
+    }
+
+    .dark-mode-toggle svg {
+        width: 18px;
+        height: 18px;
+    }
+}
