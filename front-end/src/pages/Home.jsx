@@ -1,6 +1,6 @@
 //trsting//hucsdku
 import React, { useState, useEffect } from 'react';
-import { Heart, MessageCircle, Share2, MapPin, Calendar, Users, DollarSign, Star, Verified, Plus, Filter,ArrowRight, TrendingUp,TentTree} from 'lucide-react';
+import { Heart, MessageCircle, Share2, MapPin, Calendar, Users, DollarSign, Star, Verified, Plus, Filter,ArrowRight, TrendingUp,TentTree, Moon, Sun} from 'lucide-react';
 import useUsers from '../auth/useUser.jsx';
 import '../styles/Home.css'
 import {Link} from 'react-router-dom'
@@ -36,6 +36,7 @@ const TripFeed = () => {
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [createTrip, setCreateTrip] = useState([]);
+    const [darkMode, setDarkMode] = useState(false);
 
     const [result, setResult] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -49,6 +50,28 @@ const TripFeed = () => {
     const value2= info?.interests
     const value3= info?.age
     const value4= info?.budget
+
+    // Load dark mode preference from localStorage on component mount
+    useEffect(() => {
+        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+        setDarkMode(savedDarkMode);
+        if (savedDarkMode) {
+            document.documentElement.classList.add('dark');
+        }
+    }, []);
+
+    // Toggle dark mode and save preference
+    const toggleDarkMode = () => {
+        const newDarkMode = !darkMode;
+        setDarkMode(newDarkMode);
+        localStorage.setItem('darkMode', newDarkMode.toString());
+
+        if (newDarkMode) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    };
 
     useEffect(() => {
         if (showSuccessMessage || showErrorMessage) {
@@ -129,25 +152,25 @@ const TripFeed = () => {
     }
 
 
-        const handleInputChange = (e) => {
-            const {name, value} = e.target;
-            setFilters((prev) => ({...prev, [name]: value}));
-        };
-        // const CreateTripModal = () => (
-        //
-        // );
+    const handleInputChange = (e) => {
+        const {name, value} = e.target;
+        setFilters((prev) => ({...prev, [name]: value}));
+    };
+    // const CreateTripModal = () => (
+    //
+    // );
 
-        const handleCreateTrip = () => {
-            setShowCreateTrip(true);
-        };
+    const handleCreateTrip = () => {
+        setShowCreateTrip(true);
+    };
 
-        // const handleLike = (tripId) => {
-        //     setTrips(trips.map(trip =>
-        //         trip.id === tripId
-        //             ? {...trip, likes: trip.likes + 1}
-        //             : trip
-        //     ));
-        // };
+    // const handleLike = (tripId) => {
+    //     setTrips(trips.map(trip =>
+    //         trip.id === tripId
+    //             ? {...trip, likes: trip.likes + 1}
+    //             : trip
+    //     ));
+    // };
     const predict = async () => {
         const inputData = {
             Language: value1,
@@ -204,7 +227,16 @@ const TripFeed = () => {
 
 
     return (
-        <div className="trip-feed-container">
+        <div className={`trip-feed-container ${darkMode ? 'dark-theme' : ''}`}>
+            {/* Dark Mode Toggle Button */}
+            <button
+                onClick={toggleDarkMode}
+                className="dark-mode-toggle"
+                aria-label="Toggle dark mode"
+            >
+                {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+
             <div className="feed-header">
                 <div className="header-content-home">
                     {user && <p className='hi'>Hi</p>}
@@ -214,11 +246,11 @@ const TripFeed = () => {
                         Lanka</p>
                 </div>
 
-            <div className='image-row'>
-                <img className='back_images' src={mountain}></img>
-                <img className='back_images' src={temple}></img>
-                <img className='back_images' src={beach}></img>
-            </div>
+                <div className='image-row'>
+                    <img className='back_images' src={mountain}></img>
+                    <img className='back_images' src={temple}></img>
+                    <img className='back_images' src={beach}></img>
+                </div>
             </div>
             {}
             {/*{user &&<div><br/><br/><br/><br/></div>}*/}
@@ -239,53 +271,53 @@ const TripFeed = () => {
             {user&&<div className='predict-section'>
                 <h2>Having troubles deciding where to go .........</h2>
                 <p>Let us decide it for you</p>
-            <button className='predict-button' onClick={predict}>Suggest Destination</button><br/><br/><br/>
-            <p className={`pred ${isLoading ? 'loading' : result ? 'show' : ''}`}>
-                {result}
-            </p>
+                <button className='predict-button' onClick={predict}>Suggest Destination</button><br/><br/><br/>
+                <p className={`pred ${isLoading ? 'loading' : result ? 'show' : ''}`}>
+                    {result}
+                </p>
             </div>
             }
             {!user&&
-            <section className="section-container">
-                <div className="section-wrapper">
-                    <div className="section-header">
-                        <h2 className="section-title">Why Choose Travago?</h2>
-                        <p className="section-subtitle">Your perfect travel companion</p>
+                <section className="section-container">
+                    <div className="section-wrapper">
+                        <div className="section-header">
+                            <h2 className="section-title">Why Choose Travago?</h2>
+                            <p className="section-subtitle">Your perfect travel companion</p>
+                        </div>
+
+                        <div className="feature-grid">
+                            <div className="feature-item">
+                                <div className="feature-icon-container bg-location">
+                                    <TentTree className="text-white" size={24}/>
+                                </div>
+                                <h3 className="feature-title">Fast Trip Creation</h3>
+                                <p className="feature-description">
+                                    You can create your own trip based on your preferences.
+                                </p>
+                            </div>
+
+                            <div className="feature-item" style={{animationDelay: '0.5s'}}>
+                                <div className="feature-icon-container bg-booking">
+                                    <Calendar className="text-white" size={24}/>
+                                </div>
+                                <h3 className="feature-title">Easy Joining</h3>
+                                <p className="feature-description">
+                                    With just a few clicks, can join a trip.
+                                </p>
+                            </div>
+
+                            <div className="feature-item" style={{animationDelay: '1s'}}>
+                                <div className="feature-icon-container bg-support">
+                                    <Users className="text-white" size={24}/>
+                                </div>
+                                <h3 className="feature-title">24/7 Support</h3>
+                                <p className="feature-description">
+                                    Our dedicated team is always ready to help you have the best travel experience.
+                                </p>
+                            </div>
+                        </div>
                     </div>
-
-                    <div className="feature-grid">
-                        <div className="feature-item">
-                            <div className="feature-icon-container bg-location">
-                                <TentTree className="text-white" size={24}/>
-                            </div>
-                            <h3 className="feature-title">Fast Trip Creation</h3>
-                            <p className="feature-description">
-                                You can create your own trip based on your preferences.
-                            </p>
-                        </div>
-
-                        <div className="feature-item" style={{animationDelay: '0.5s'}}>
-                            <div className="feature-icon-container bg-booking">
-                                <Calendar className="text-white" size={24}/>
-                            </div>
-                            <h3 className="feature-title">Easy Joining</h3>
-                            <p className="feature-description">
-                                With just a few clicks, can join a trip.
-                            </p>
-                        </div>
-
-                        <div className="feature-item" style={{animationDelay: '1s'}}>
-                            <div className="feature-icon-container bg-support">
-                                <Users className="text-white" size={24}/>
-                            </div>
-                            <h3 className="feature-title">24/7 Support</h3>
-                            <p className="feature-description">
-                                Our dedicated team is always ready to help you have the best travel experience.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                </section>
             }
             <br/>
             {!user && <section className="hero-section">
@@ -341,7 +373,7 @@ const TripFeed = () => {
                                     <option value="Horton Plains">Horton Plains</option>
                                     <option value="Knuckles">Knuckles</option>
                                     <option value="Bentota">Bentota</option>
-                                    <option value="Adam’s Peak">Adam’s Peak</option>
+                                    <option value="Adam's Peak">Adam's Peak</option>
                                     <option value="Pigeon Island">Pigeon Island</option>
                                     <option value="Unawatuna">Unawatuna</option>
                                     <option value="Hikkaduwa">Hikkaduwa</option>
